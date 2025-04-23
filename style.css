@@ -1,0 +1,186 @@
+/* =================================== */
+/* STYLE.CSS - Party Style v9.9++      */
+/* Config: Titolo(size,font), Loader(show,txt,color,size,width,speed), Bottoni(font,pad) */
+/* Animation: Titolo(flicker), Logo(float), LoaderTxt(old-bar-flicker), Btn(pulse) */
+/* + Footer Image + Countdown Timer */
+/* FIX: Abilitato scroll per contenuto lungo */
+/* FIX: Rimosso sfondo forzato contenitori immagini */
+/* FIX: Corretta sintassi commenti CSS */
+/* =================================== */
+
+/* --- Keyframes --- */
+
+/* Animazione per il riempimento della BARRA del loader */
+@keyframes loading-loop {
+  0% { width: 0%; }
+  50% { width: 100%; }
+  100% { width: 0%; }
+}
+
+/* *** NUOVA ANIMAZIONE FLICKER "OLD BAR" PER TESTO LOADER *** */
+@keyframes old-bar-flicker {
+  0%, 100% { opacity: 1; text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 8px #0ff, 0 0 12px #0ff, 0 0 15px #0ff; }
+  50% { opacity: 0.6; text-shadow: 0 0 2px rgba(255, 255, 255, 0.7), 0 0 4px rgba(0, 255, 255, 0.5), 0 0 8px rgba(0, 255, 255, 0.3); }
+  5% { opacity: 0.7; } 8% { opacity: 1; } 15% { opacity: 0.4; text-shadow: 0 0 2px rgba(0, 255, 255, 0.3); } 18% { opacity: 1; } 30% { opacity: 0.8; } 40% { opacity: 1; } 60% { opacity: 0.5; } 63% { opacity: 1; } 75% { opacity: 0.7; } 85% { opacity: 1; } 92% { opacity: 0.6; } 95% { opacity: 1; }
+}
+
+/* Animazione per il Glow del Pulsante su Hover/Attivo */
+@keyframes pulse-intense {
+  0%, 100% { box-shadow: 0 0 8px var(--button-neon-color, #fff), inset 0 0 3px 1px rgba(0,0,0,0.5); transform: scale(1); }
+  50% { box-shadow: 0 0 15px var(--button-neon-color, #fff), 0 0 25px var(--button-neon-color, #fff), inset 0 0 4px 1px rgba(0,0,0,0.4); transform: scale(1.03); }
+}
+
+/* Animazione Float Logo */
+@keyframes logo-float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Keyframe per Flicker Neon Titolo H1 */
+@keyframes high-quality-flicker {
+  0%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 1), 0 0 10px rgba(0, 255, 255, 0.9), 0 0 20px rgba(0, 255, 255, 0.7), 0 0 40px rgba(0, 255, 255, 0.5), 0 0 70px rgba(0, 255, 255, 0.3); opacity: 1; }
+  15% { text-shadow: 0 0 3px rgba(255, 255, 255, 0.8), 0 0 6px rgba(0, 255, 255, 0.5), 0 0 10px rgba(0, 255, 255, 0.3); opacity: 0.8; }
+  30% { text-shadow: 0 0 5px rgba(255, 255, 255, 1), 0 0 9px rgba(0, 255, 255, 0.8), 0 0 18px rgba(0, 255, 255, 0.6), 0 0 35px rgba(0, 255, 255, 0.4); opacity: 0.95; }
+  42% { text-shadow: 0 0 2px rgba(255, 255, 255, 0.5); opacity: 0.5; }
+  47% { text-shadow: 0 0 5px rgba(255, 255, 255, 1), 0 0 10px rgba(0, 255, 255, 0.9), 0 0 20px rgba(0, 255, 255, 0.7), 0 0 40px rgba(0, 255, 255, 0.5); opacity: 1; }
+  65% { text-shadow: 0 0 4px rgba(255, 255, 255, 0.9), 0 0 8px rgba(0, 255, 255, 0.6); opacity: 0.9; }
+  80% { text-shadow: 0 0 3px rgba(255, 255, 255, 0.6); opacity: 0.7; }
+}
+
+/* --- Stili Generali --- */
+html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body { position: relative; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; box-sizing: border-box; padding: 5vw; text-align: center; color: white; display: flex; flex-direction: column; /* justify-content: center; */ align-items: center; min-height: 100vh; margin: 0; /* overflow: hidden; */ background-color: black; }
+
+/* --- Contenuto Principale --- */
+.main-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; width: 100%; }
+
+/* --- Effetti Sfondo --- */
+.background-effects {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Impedisce che gli effetti escano */
+    z-index: 0; /* Dietro il contenuto principale */
+}
+
+/* Esempio Stella Cadente (posizionamento e animazione da definire) */
+.shooting-star {
+    /* Stili per la stella cadente */
+    /* position: absolute; */
+    /* ... altri stili e animazione ... */
+}
+
+
+/* Logo */
+#logo-container {}
+#logo-container img { display: block; max-width: 120px; height: auto; margin-left: auto; margin-right: auto; margin-bottom: 1.5em; animation: logo-float 3s ease-in-out infinite; }
+
+/* Titolo H1 */
+h1 { /* font-size controllato da JS */ max-width: 95%; line-height: 1.1; color: #ffffff; margin-top: .5em; margin-bottom: 1.5em; animation: high-quality-flicker 2s linear infinite; word-wrap: break-word; font-weight: bold; }
+
+/* *** STILI COUNTDOWN TIMER - v3 COMPATTO *** */
+#countdown-container {
+  margin-top: 1.5em;
+  margin-bottom: 2.5em;
+  width: 100%;
+  max-width: 450px; /* Mantieni o riduci se serve */
+  padding: 0.4em 0.2em; /* <<< RIDOTTO PADDING CONTENITORE */
+  box-sizing: border-box;
+}
+
+#countdown-label {
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  opacity: 0.8;
+  margin-bottom: 0.4em;
+  display: block;
+  color: #ccc;
+  letter-spacing: 0.5px;
+  white-space: normal;
+}
+
+#countdown-timer {
+  font-family: 'Orbitron', 'Courier New', Courier, monospace;
+  /* Ridotto ancora il font size */
+  font-size: clamp(1.4rem, 5vw, 2.2rem); /* <<< RIDOTTO ULTERIORMENTE */
+  font-weight: bold;
+    color: lime; /* Colore base Verde Lime */
+  text-shadow:
+    0 0 2px rgba(255, 255, 255, 0.7), /* Glow bianco interno */
+    0 0 5px lime,  /* Glow Verde Lime */
+    0 0 10px lime, /* Glow Verde Lime */
+    0 0 15px rgba(0, 255, 0, 0.5); /* Glow Verde Lime esterno più ampio */
+  letter-spacing: 1px; /* <<< RIDOTTO ULTERIORMENTE */
+  line-height: 1.1; /* Ridotto per compattare verticalmente */
+  white-space: nowrap; /* Mantenuto per ora */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* Stile per gli span numerici (00) */
+#countdown-timer span {
+  display: inline-block;
+  padding: 0; /* Nessun padding extra */
+}
+
+/* Separatori ':' */
+#countdown-timer span#hours::before,
+#countdown-timer span#minutes::before,
+#countdown-timer span#seconds::before {
+   content: ':';
+   color: rgba(0, 255, 255, 0.4);
+   padding: 0 0.1em; /* <<< RIDOTTO PADDING SEPARATORE */
+   font-size: 0.65em; /* <<< RIDOTTO DIMENSIONE SEPARATORE */
+   vertical-align: middle;
+   text-shadow: none;
+}
+/* Lettere d,h,m,s */
+#countdown-timer span#days::after,
+#countdown-timer span#hours::after,
+#countdown-timer span#minutes::after,
+#countdown-timer span#seconds::after {
+   content: attr(id);
+   font-size: 0.35em; /* <<< RESO MOLTO PICCOLO */
+   color: rgba(0, 255, 255, 0.6);
+   text-transform: lowercase;
+   vertical-align: middle; /* Prova ad allineare meglio */
+   padding-left: 0.05em; /* <<< RIDOTTO PADDING LETTERE QUASI A ZERO */
+   text-shadow: none;
+   letter-spacing: 0.5px;
+   display: inline-block; /* Assicura che siano trattate come blocchi */
+   line-height: 1; /* Evita che influenzino troppo l'altezza linea */
+}
+
+
+#countdown-message {
+  font-size: clamp(1rem, 4vw, 1.3rem); /* Ridotto */
+  font-weight: bold;
+  color: #ffdf00;
+  text-shadow: 0 0 5px #ffdf00, 0 0 10px rgba(255, 223, 0, 0.5);
+  margin-top: 0.7em;
+}
+/* Loader */
+.loader-container { position: relative; margin-bottom: 3em; justify-content: center; align-items: center; background-color: rgba(15, 15, 15, .7); border-radius: 1.5em; border: 1px solid rgba(100, 100, 100, .5); box-shadow: inset 0 0 8px rgba(0, 0, 0, .6); overflow: hidden; z-index: 1; display: flex; /* width, display gestiti parzialmente da JS */ }
+.loader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0; opacity: .5; border-radius: 1.5em; animation: loading-loop linear infinite; z-index: 1; } /* background, animation-duration gestiti da JS */
+#loading-text-container { position: relative; z-index: 2; font-weight: bold; color: #fff; letter-spacing: 3px; text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 8px #0ff, 0 0 12px #0ff, 0 0 15px #0ff; overflow: hidden; white-space: nowrap; display: inline-block; animation: old-bar-flicker 2.5s linear infinite; padding: 0.5em 1em; } /* font-size gestito da JS */
+
+/* Contenitore Pulsanti */
+.link-container { display: flex; flex-direction: column; align-items: center; gap: 1.5em; margin-top: 1em; width: 100%; max-width: 450px; }
+#loading-message, .link-container p { font-size: 1.2em; opacity: .7; }
+
+/* Pulsante Link */
+.link-button { position: relative; display: block; width: 100%; color: #fff; text-decoration: none; border-radius: 50px; font-weight: bold; border: 2px solid; border-color: var(--button-neon-color, rgba(255, 255, 255, .5)); cursor: pointer; transition: transform .2s ease, box-shadow .4s ease, border-color .4s ease, background .3s ease; box-shadow: 0 0 8px var(--button-neon-color, #fff), inset 0 0 3px 1px rgba(0, 0, 0, .5); line-height: 1.3; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); text-shadow: 1px 1px 2px rgba(0, 0, 0, .6); } /* padding, background, font-size gestiti da JS */
+.link-button:hover, .link-button:active { transform: scale(1.03); border-color: #fff; animation: pulse-intense 1s infinite alternate; }
+
+/* STILI IMMAGINE FOOTER */
+#footer-image-container { width: 100%; margin-top: 2.5em; margin-bottom: 1em; }
+#footer-image-container img { display: block; margin-left: auto; margin-right: auto; max-width: 80%; height: auto; border-radius: 8px; }
+
+/* Stili Errore Frontend */
+.error-message { color: #ff4444; font-weight: bold; margin-top: 2em; border: 1px solid #ff4444; padding: 1em; background-color: rgba(255, 0, 0, .1); border-radius: .5em; }
+body.error-page h1 { animation: none; text-shadow: none; color: #ff4444; }

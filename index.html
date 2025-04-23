@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caricamento...</title>
+
+    <!-- *** AGGIUNGI QUESTI LINK PER ORBITRON *** -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <!-- *** FINE LINK FONT *** -->
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Effetti di sfondo (es. stelle cadenti) -->
+    <div class="background-effects">
+         <div class="shooting-star"></div>
+         <!-- Aggiungi qui altri effetti se necessario -->
+    </div>
+
+    <div class="main-content">
+        <div id="logo-container"></div>
+        <h1 id="page-title"></h1>
+
+        <!-- Contenitore Countdown Timer -->
+        <div id="countdown-container" style="display: none;">
+            <p id="countdown-label"></p>
+            <div id="countdown-timer">
+                 <span id="days">00</span>
+                 <span id="hours">00</span>
+                 <span id="minutes">00</span>
+                 <span id="seconds">00</span>
+            </div>
+             <p id="countdown-message" style="display: none;"></p>
+        </div>
+        <!-- Fine Contenitore Countdown Timer -->
+
+        <!-- Loader -->
+        <div class="loader-container" id="loader" style="display: none;">
+           <div class="loader-bar"></div>
+           <span id="loading-text-container"></span>
+        </div>
+        <!-- Fine Loader -->
+
+        <!-- Contenitore Link -->
+        <div class="link-container" id="link-container">
+            <p id="loading-message">Caricamento link...</p> <!-- Messaggio iniziale -->
+        </div>
+         <!-- Fine Contenitore Link -->
+
+        <!-- Immagine Footer -->
+        <div id="footer-image-container"></div>
+         <!-- Fine Immagine Footer -->
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
