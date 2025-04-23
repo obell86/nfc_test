@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Loader
-            const showLoader = getField(configFields, fieldMap.config.showLoader, true); // Default a true
+            const showLoader = getField(configFields, fieldMap.config.showLoader, false); // Default a true
             if (loader) {
                 if (showLoader === true) {
                     loader.style.display = 'flex'; // Usa flex come nel CSS
