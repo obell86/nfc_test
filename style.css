@@ -1,13 +1,14 @@
 /* =================================== */
 /* STYLE.CSS - Party Style v9.9++      */
 /* Config: Titolo(size,font), Loader(show,txt,color,size,width,speed), Bottoni(font,pad) */
-/* Animation: Titolo(flicker), Logo(float), LoaderTxt(old-bar-flicker), Btn(pulse) */
+/* Animation: Titolo(flicker), Logo(float), LoaderTxt(old-bar-flicker), Btn(pulse), Countdown(flicker) */
 /* + Footer Image + Countdown Timer */
 /* FIX: Abilitato scroll per contenuto lungo */
 /* FIX: Rimosso sfondo forzato contenitori immagini */
 /* FIX: Corretta sintassi commenti CSS */
 /* ADDED: Media Query per ottimizzazione mobile */
 /* MODIFIED: Aumentata dimensione logo e countdown su mobile */
+/* MODIFIED: Countdown colore giallo/arancio con flicker */
 /* =================================== */
 
 /* --- Keyframes --- */
@@ -50,6 +51,33 @@
   65% { text-shadow: 0 0 4px rgba(255, 255, 255, 0.9), 0 0 8px rgba(0, 255, 255, 0.6); opacity: 0.9; }
   80% { text-shadow: 0 0 3px rgba(255, 255, 255, 0.6); opacity: 0.7; }
 }
+
+/* *** NUOVA ANIMAZIONE FLICKER PER COUNTDOWN GIALLO/ARANCIO *** */
+@keyframes countdown-flicker-yellow {
+  0%, 100% {
+    opacity: 1;
+    text-shadow:
+      0 0 2px rgba(255, 255, 255, 0.7), /* Glow bianco interno opzionale */
+      0 0 5px #FFC107,             /* Giallo/Ambra vicino */
+      0 0 10px #FFC107,            /* Giallo/Ambra medio */
+      0 0 15px #FFA000,            /* Arancio più scuro largo */
+      0 0 20px rgba(255, 160, 0, 0.4); /* Glow Arancio esterno morbido */
+  }
+  50% { /* Stato più debole */
+    opacity: 0.7;
+    text-shadow:
+      0 0 1px rgba(255, 255, 255, 0.5),
+      0 0 3px #FFD54F, /* Giallo più chiaro */
+      0 0 6px rgba(255, 160, 0, 0.3); /* Arancio debole */
+  }
+  /* Passaggi intermedi per flicker irregolare */
+  5%, 95% { opacity: 0.9; }
+  15% { opacity: 0.6; text-shadow: 0 0 2px #FFA000, 0 0 4px rgba(255, 160, 0, 0.3); }
+  30%, 70% { opacity: 1; } /* Breve picco di luminosità */
+  40% { opacity: 0.5; text-shadow: 0 0 1px #FFC107; }
+  80% { opacity: 0.8; }
+}
+
 
 /* --- Stili Generali --- */
 html {
@@ -141,21 +169,24 @@ h1 {
     opacity: 0.8;
     margin-bottom: 0.3em;
     display: block;
-    color: #ccc;
+    color: #ccc; /* Manteniamo grigio chiaro per contrasto */
     letter-spacing: 0.5px;
     white-space: normal;
 }
 
+/* --- MODIFICA COUNTDOWN TIMER - Colore e Flicker --- */
 #countdown-timer {
     font-family: 'Orbitron', 'Courier New', Courier, monospace;
     font-size: clamp(1.2rem, 5vw, 2rem); /* Dimensione standard timer */
     font-weight: bold;
-    color: lime;
-    text-shadow:
+    color: #FFC107; /* <<< NUOVO COLORE BASE: Giallo/Ambra */
+    /* text-shadow originale commentato */
+    /* text-shadow:
         0 0 1px rgba(255, 255, 255, 0.6),
         0 0 3px lime,
         0 0 7px lime,
-        0 0 10px rgba(0, 255, 0, 0.4);
+        0 0 10px rgba(0, 255, 0, 0.4); */
+    /* <<< NUOVO TEXT-SHADOW E ANIMAZIONE APPLICATI TRAMITE KEYFRAME */
     letter-spacing: 0.5px;
     line-height: 1;
     white-space: nowrap;
@@ -164,7 +195,10 @@ h1 {
     width: 100%;
     box-sizing: border-box;
     text-align: center;
+    animation: countdown-flicker-yellow 2.5s linear infinite; /* <<< APPLICA ANIMAZIONE FLICKER */
 }
+/* --- FINE MODIFICA COUNTDOWN --- */
+
 
 /* Stile per gli span numerici (00) */
 #countdown-timer span {
@@ -177,11 +211,12 @@ h1 {
 #countdown-timer span#minutes::before,
 #countdown-timer span#seconds::before {
    content: ':';
-   color: rgba(0, 255, 255, 0.4);
+   /* Cambiamo colore anche ai separatori per coerenza? Opzionale */
+   color: rgba(255, 193, 7, 0.6); /* Giallo/Ambra trasparente */
    padding: 0 0.05em;
    font-size: 0.6em;
    vertical-align: middle;
-   text-shadow: none;
+   text-shadow: none; /* No shadow sui separatori */
 }
 /* Lettere d,h,m,s */
 #countdown-timer span#days::after,
@@ -190,11 +225,12 @@ h1 {
 #countdown-timer span#seconds::after {
    content: attr(id);
    font-size: 0.3em;
-   color: rgba(0, 255, 255, 0.6);
+   /* Cambiamo colore anche alle lettere? Opzionale */
+   color: rgba(255, 160, 0, 0.7); /* Arancio trasparente */
    text-transform: lowercase;
    vertical-align: middle;
    padding-left: 0.02em;
-   text-shadow: none;
+   text-shadow: none; /* No shadow sulle lettere */
    letter-spacing: 0;
    display: inline-block;
    line-height: 1;
@@ -204,8 +240,11 @@ h1 {
 #countdown-message {
     font-size: clamp(0.9rem, 3.5vw, 1.1rem); /* Dimensione standard messaggio */
     font-weight: bold;
-    color: #ffdf00;
-    text-shadow: 0 0 3px #ffdf00, 0 0 7px rgba(255, 223, 0, 0.5);
+    color: #ffdf00; /* Manteniamo giallo brillante per il messaggio o cambiamo? */
+    /* text-shadow: 0 0 3px #ffdf00, 0 0 7px rgba(255, 223, 0, 0.5); */
+     /* Potrebbe essere meglio un colore meno neon per contrastare con il timer */
+     color: #FFA000; /* Arancio */
+     text-shadow: 0 0 4px rgba(255, 160, 0, 0.6); /* Ombra arancio leggera */
     margin-top: 0.5em;
 }
 /* Loader */
@@ -363,11 +402,19 @@ body.error-page h1 {
          margin-bottom: 0.3em; /* << AUMENTATO leggermente margine sotto etichetta */
      }
 
+    /* --- MODIFICA COUNTDOWN TIMER MOBILE - Colore e Flicker --- */
     #countdown-timer {
         font-size: clamp(1.6rem, 7vw, 2.5rem); /* << AUMENTATO SIGNIFICATIVAMENTE: Dimensione numeri timer */
+        color: #FFC107; /* <<< NUOVO COLORE BASE: Giallo/Ambra */
         letter-spacing: 0.5px; /* << AUMENTATO leggermente: Un po' più di spazio tra i numeri */
-        text-shadow: 0 0 2px rgba(255,255,255,0.5), 0 0 4px lime, 0 0 8px lime, 0 0 12px rgba(0,255,0,0.4); /* << AUMENTATO leggermente: Glow più visibile con font più grande */
+        /* text-shadow originale commentato */
+        /* text-shadow: 0 0 2px lime, 0 0 5px rgba(0, 255, 0, 0.4); */
+        /* <<< NUOVO TEXT-SHADOW E ANIMAZIONE APPLICATI TRAMITE KEYFRAME */
+        /* Il text-shadow effettivo viene gestito dall'animazione */
+        animation: countdown-flicker-yellow 2.5s linear infinite; /* <<< APPLICA ANIMAZIONE FLICKER */
     }
+    /* --- FINE MODIFICA COUNTDOWN MOBILE --- */
+
 
     /* Separatori ':' proporzionati alla nuova dimensione */
     #countdown-timer span#hours::before,
@@ -375,6 +422,7 @@ body.error-page h1 {
     #countdown-timer span#seconds::before {
        padding: 0 0.08em; /* << AUMENTATO padding separatore */
        font-size: 0.6em; /* << AUMENTATO dimensione separatore */
+       color: rgba(255, 193, 7, 0.6); /* Giallo/Ambra trasparente (coerente con sopra) */
     }
     /* Lettere d,h,m,s proporzionate alla nuova dimensione */
     #countdown-timer span#days::after,
@@ -383,11 +431,14 @@ body.error-page h1 {
     #countdown-timer span#seconds::after {
        font-size: 0.35em; /* << AUMENTATO dimensione lettere */
        padding-left: 0.05em; /* << AUMENTATO leggermente padding lettere */
+       color: rgba(255, 160, 0, 0.7); /* Arancio trasparente (coerente con sopra) */
     }
 
      #countdown-message {
         font-size: clamp(0.9rem, 3.5vw, 1.1rem); /* << AUMENTATO leggermente: Messaggio sotto il timer */
         margin-top: 0.6em; /* << AUMENTATO leggermente: Spazio sopra messaggio */
+        color: #FFA000; /* Arancio (coerente con sopra) */
+        text-shadow: 0 0 4px rgba(255, 160, 0, 0.6); /* Ombra arancio leggera (coerente con sopra) */
      }
     /* --- FINE MODIFICHE COUNTDOWN --- */
 
