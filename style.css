@@ -6,6 +6,7 @@
 /* FIX: Abilitato scroll per contenuto lungo */
 /* FIX: Rimosso sfondo forzato contenitori immagini */
 /* FIX: Corretta sintassi commenti CSS */
+/* ADDED: Media Query per ottimizzazione mobile */
 /* =================================== */
 
 /* --- Keyframes --- */
@@ -33,12 +34,13 @@
 /* Animazione Float Logo */
 @keyframes logo-float {
   0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(-8px); } /* Leggermente ridotto float */
   100% { transform: translateY(0px); }
 }
 
 /* Keyframe per Flicker Neon Titolo H1 */
 @keyframes high-quality-flicker {
+  /* (Keyframe invariato, l'animazione va bene) */
   0%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 1), 0 0 10px rgba(0, 255, 255, 0.9), 0 0 20px rgba(0, 255, 255, 0.7), 0 0 40px rgba(0, 255, 255, 0.5), 0 0 70px rgba(0, 255, 255, 0.3); opacity: 1; }
   15% { text-shadow: 0 0 3px rgba(255, 255, 255, 0.8), 0 0 6px rgba(0, 255, 255, 0.5), 0 0 10px rgba(0, 255, 255, 0.3); opacity: 0.8; }
   30% { text-shadow: 0 0 5px rgba(255, 255, 255, 1), 0 0 9px rgba(0, 255, 255, 0.8), 0 0 18px rgba(0, 255, 255, 0.6), 0 0 35px rgba(0, 255, 255, 0.4); opacity: 0.95; }
@@ -49,11 +51,40 @@
 }
 
 /* --- Stili Generali --- */
-html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-body { position: relative; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; box-sizing: border-box; padding: 5vw; text-align: center; color: white; display: flex; flex-direction: column; /* justify-content: center; */ align-items: center; min-height: 100vh; margin: 0; /* overflow: hidden; */ background-color: black; }
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+body {
+    position: relative;
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+    /* Padding ridotto per mobile, valore fisso più gestibile */
+    padding: 20px; /* Era 5vw */
+    text-align: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; (Rimosso per permettere scroll naturale se contenuto è lungo)*/
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    /* overflow: hidden; (Commentato per permettere scroll se necessario) */
+    background-color: black;
+    overflow-x: hidden; /* Impedisce scroll orizzontale indesiderato */
+}
 
 /* --- Contenuto Principale --- */
-.main-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; width: 100%; }
+.main-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 100%; /* Assicura che non superi la larghezza dello schermo */
+}
 
 /* --- Effetti Sfondo --- */
 .background-effects {
@@ -76,56 +107,82 @@ body { position: relative; font-family: "Segoe UI", Roboto, Helvetica, Arial, sa
 
 /* Logo */
 #logo-container {}
-#logo-container img { display: block; max-width: 120px; height: auto; margin-left: auto; margin-right: auto; margin-bottom: 1.5em; animation: logo-float 3s ease-in-out infinite; }
+#logo-container img {
+    display: block;
+    /* Dimensione leggermente ridotta per mobile */
+    max-width: 100px; /* Era 120px */
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    /* Margine inferiore ridotto */
+    margin-bottom: 1em; /* Era 1.5em */
+    animation: logo-float 3s ease-in-out infinite;
+}
 
 /* Titolo H1 */
-h1 { /* font-size controllato da JS */ max-width: 95%; line-height: 1.1; color: #ffffff; margin-top: .5em; margin-bottom: 1.5em; animation: high-quality-flicker 2s linear infinite; word-wrap: break-word; font-weight: bold; }
+h1 {
+    /* font-size controllato da JS */
+    max-width: 95%;
+    line-height: 1.1;
+    color: #ffffff;
+    /* Margini verticali ridotti */
+    margin-top: 0.3em; /* Era .5em */
+    margin-bottom: 1em; /* Era 1.5em */
+    animation: high-quality-flicker 2s linear infinite;
+    word-wrap: break-word;
+    font-weight: bold;
+}
 
 /* *** STILI COUNTDOWN TIMER - v3 COMPATTO *** */
 #countdown-container {
-  margin-top: 1.5em;
-  margin-bottom: 2.5em;
-  width: 100%;
-  max-width: 450px; /* Mantieni o riduci se serve */
-  padding: 0.4em 0.2em; /* <<< RIDOTTO PADDING CONTENITORE */
-  box-sizing: border-box;
+    /* Margini verticali ridotti */
+    margin-top: 1em; /* Era 1.5em */
+    margin-bottom: 1.5em; /* Era 2.5em */
+    width: 100%;
+    max-width: 90vw; /* Usa vw per adattarsi meglio su schermi piccoli */
+    /* Padding ridotto */
+    padding: 0.3em 0.1em; /* Era 0.4em 0.2em */
+    box-sizing: border-box;
 }
 
 #countdown-label {
-  font-size: clamp(0.8rem, 2.5vw, 1rem);
-  opacity: 0.8;
-  margin-bottom: 0.4em;
-  display: block;
-  color: #ccc;
-  letter-spacing: 0.5px;
-  white-space: normal;
+    /* Font size leggermente ridotto */
+    font-size: clamp(0.75rem, 2.5vw, 0.9rem); /* Minimo/massimo ridotti */
+    opacity: 0.8;
+    /* Margine inferiore ridotto */
+    margin-bottom: 0.3em; /* Era 0.4em */
+    display: block;
+    color: #ccc;
+    letter-spacing: 0.5px;
+    white-space: normal;
 }
 
 #countdown-timer {
-  font-family: 'Orbitron', 'Courier New', Courier, monospace;
-  /* Ridotto ancora il font size */
-  font-size: clamp(1.4rem, 5vw, 2.2rem); /* <<< RIDOTTO ULTERIORMENTE */
-  font-weight: bold;
+    font-family: 'Orbitron', 'Courier New', Courier, monospace;
+    /* Font size clamp aggiustato per mobile */
+    font-size: clamp(1.2rem, 5vw, 2rem); /* Minimo/massimo ridotti */
+    font-weight: bold;
     color: lime; /* Colore base Verde Lime */
-  text-shadow:
-    0 0 2px rgba(255, 255, 255, 0.7), /* Glow bianco interno */
-    0 0 5px lime,  /* Glow Verde Lime */
-    0 0 10px lime, /* Glow Verde Lime */
-    0 0 15px rgba(0, 255, 0, 0.5); /* Glow Verde Lime esterno più ampio */
-  letter-spacing: 1px; /* <<< RIDOTTO ULTERIORMENTE */
-  line-height: 1.1; /* Ridotto per compattare verticalmente */
-  white-space: nowrap; /* Mantenuto per ora */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-  box-sizing: border-box;
-  text-align: center;
+    text-shadow:
+        0 0 1px rgba(255, 255, 255, 0.6), /* Glow ridotto */
+        0 0 3px lime,  /* Glow ridotto */
+        0 0 7px lime, /* Glow ridotto */
+        0 0 10px rgba(0, 255, 0, 0.4); /* Glow ridotto */
+    /* Letter spacing ridotto */
+    letter-spacing: 0.5px; /* Era 1px */
+    line-height: 1; /* Molto compatto */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 /* Stile per gli span numerici (00) */
 #countdown-timer span {
-  display: inline-block;
-  padding: 0; /* Nessun padding extra */
+    display: inline-block;
+    padding: 0; /* Nessun padding extra */
 }
 
 /* Separatori ':' */
@@ -134,8 +191,10 @@ h1 { /* font-size controllato da JS */ max-width: 95%; line-height: 1.1; color: 
 #countdown-timer span#seconds::before {
    content: ':';
    color: rgba(0, 255, 255, 0.4);
-   padding: 0 0.1em; /* <<< RIDOTTO PADDING SEPARATORE */
-   font-size: 0.65em; /* <<< RIDOTTO DIMENSIONE SEPARATORE */
+   /* Padding separatore quasi nullo */
+   padding: 0 0.05em; /* Era 0.1em */
+   /* Dimensione separatore ridotta */
+   font-size: 0.6em; /* Era 0.65em */
    vertical-align: middle;
    text-shadow: none;
 }
@@ -145,42 +204,277 @@ h1 { /* font-size controllato da JS */ max-width: 95%; line-height: 1.1; color: 
 #countdown-timer span#minutes::after,
 #countdown-timer span#seconds::after {
    content: attr(id);
-   font-size: 0.35em; /* <<< RESO MOLTO PICCOLO */
+   /* Dimensione lettere molto piccola */
+   font-size: 0.3em; /* Era 0.35em */
    color: rgba(0, 255, 255, 0.6);
    text-transform: lowercase;
-   vertical-align: middle; /* Prova ad allineare meglio */
-   padding-left: 0.05em; /* <<< RIDOTTO PADDING LETTERE QUASI A ZERO */
+   vertical-align: middle;
+   /* Padding lettere quasi nullo */
+   padding-left: 0.02em; /* Era 0.05em */
    text-shadow: none;
-   letter-spacing: 0.5px;
-   display: inline-block; /* Assicura che siano trattate come blocchi */
-   line-height: 1; /* Evita che influenzino troppo l'altezza linea */
+   letter-spacing: 0; /* No letter spacing */
+   display: inline-block;
+   line-height: 1;
 }
 
 
 #countdown-message {
-  font-size: clamp(1rem, 4vw, 1.3rem); /* Ridotto */
-  font-weight: bold;
-  color: #ffdf00;
-  text-shadow: 0 0 5px #ffdf00, 0 0 10px rgba(255, 223, 0, 0.5);
-  margin-top: 0.7em;
+    /* Font size ridotto */
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem); /* Era clamp(1rem, 4vw, 1.3rem) */
+    font-weight: bold;
+    color: #ffdf00;
+    text-shadow: 0 0 3px #ffdf00, 0 0 7px rgba(255, 223, 0, 0.5); /* Glow ridotto */
+    /* Margine superiore ridotto */
+    margin-top: 0.5em; /* Era 0.7em */
 }
 /* Loader */
-.loader-container { position: relative; margin-bottom: 3em; justify-content: center; align-items: center; background-color: rgba(15, 15, 15, .7); border-radius: 1.5em; border: 1px solid rgba(100, 100, 100, .5); box-shadow: inset 0 0 8px rgba(0, 0, 0, .6); overflow: hidden; z-index: 1; display: flex; /* width, display gestiti parzialmente da JS */ }
-.loader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0; opacity: .5; border-radius: 1.5em; animation: loading-loop linear infinite; z-index: 1; } /* background, animation-duration gestiti da JS */
-#loading-text-container { position: relative; z-index: 2; font-weight: bold; color: #fff; letter-spacing: 3px; text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 8px #0ff, 0 0 12px #0ff, 0 0 15px #0ff; overflow: hidden; white-space: nowrap; display: inline-block; animation: old-bar-flicker 2.5s linear infinite; padding: 0.5em 1em; } /* font-size gestito da JS */
+.loader-container {
+    position: relative;
+    /* Margine inferiore ridotto */
+    margin-bottom: 1.5em; /* Era 3em */
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(15, 15, 15, .7);
+    border-radius: 1.5em;
+    border: 1px solid rgba(100, 100, 100, .5);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .5); /* Ridotto leggermente */
+    overflow: hidden;
+    z-index: 1;
+    display: flex; /* width, display gestiti parzialmente da JS */
+    /* Larghezza massima per evitare che si allarghi troppo */
+    max-width: 90%;
+}
+.loader-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+    opacity: .5;
+    border-radius: 1.5em;
+    animation: loading-loop linear infinite;
+    z-index: 1;
+    /* background, animation-duration gestiti da JS */
+}
+#loading-text-container {
+    position: relative;
+    z-index: 2;
+    font-weight: bold;
+    color: #fff;
+    /* Letter spacing ridotto */
+    letter-spacing: 1.5px; /* Era 3px */
+    text-shadow: 0 0 1px #fff, 0 0 3px #fff, 0 0 5px #0ff, 0 0 8px #0ff, 0 0 10px #0ff; /* Glow ridotto */
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+    animation: old-bar-flicker 2.5s linear infinite;
+    /* Padding ridotto */
+    padding: 0.4em 0.8em; /* Era 0.5em 1em */
+    /* font-size gestito da JS */
+}
 
 /* Contenitore Pulsanti */
-.link-container { display: flex; flex-direction: column; align-items: center; gap: 1.5em; margin-top: 1em; width: 100%; max-width: 450px; }
-#loading-message, .link-container p { font-size: 1.2em; opacity: .7; }
+.link-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Gap tra pulsanti ridotto */
+    gap: 1em; /* Era 1.5em */
+    /* Margine superiore ridotto */
+    margin-top: 0.8em; /* Era 1em */
+    width: 100%;
+    max-width: 90%; /* Leggermente più stretto su mobile */
+}
+#loading-message, .link-container p {
+    /* Font size leggermente ridotto */
+    font-size: 1rem; /* Era 1.2em */
+    opacity: .7;
+    /* Riduci margini se presenti (non definiti qui, ma buona pratica) */
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
 
 /* Pulsante Link */
-.link-button { position: relative; display: block; width: 100%; color: #fff; text-decoration: none; border-radius: 50px; font-weight: bold; border: 2px solid; border-color: var(--button-neon-color, rgba(255, 255, 255, .5)); cursor: pointer; transition: transform .2s ease, box-shadow .4s ease, border-color .4s ease, background .3s ease; box-shadow: 0 0 8px var(--button-neon-color, #fff), inset 0 0 3px 1px rgba(0, 0, 0, .5); line-height: 1.3; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); text-shadow: 1px 1px 2px rgba(0, 0, 0, .6); } /* padding, background, font-size gestiti da JS */
-.link-button:hover, .link-button:active { transform: scale(1.03); border-color: #fff; animation: pulse-intense 1s infinite alternate; }
+.link-button {
+    position: relative;
+    display: block;
+    width: 100%;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    border: 2px solid;
+    border-color: var(--button-neon-color, rgba(255, 255, 255, .5));
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .4s ease, border-color .4s ease, background .3s ease;
+    /* Ombra ridotta */
+    box-shadow: 0 0 5px var(--button-neon-color, #fff), inset 0 0 2px 1px rgba(0, 0, 0, .4); /* Era 8px, 3px */
+    line-height: 1.3;
+    backdrop-filter: blur(2px); /* Blur leggermente ridotto */
+    -webkit-backdrop-filter: blur(2px);
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, .5); /* Ridotto */
+    /* padding, background, font-size gestiti da JS - Assicurati che il JS usi valori appropriati per mobile */
+    /* Se il padding è fisso in CSS, riducilo qui: */
+    /* padding: 0.6em 1em; */ /* Esempio - Adatta se necessario */
+}
+.link-button:hover, .link-button:active {
+    /* Animazione pulse invariata, ma l'effetto iniziale è ridotto */
+    transform: scale(1.02); /* Scala ridotta */
+    border-color: #fff;
+    animation: pulse-intense 1s infinite alternate;
+}
 
 /* STILI IMMAGINE FOOTER */
-#footer-image-container { width: 100%; margin-top: 2.5em; margin-bottom: 1em; }
-#footer-image-container img { display: block; margin-left: auto; margin-right: auto; max-width: 80%; height: auto; border-radius: 8px; }
+#footer-image-container {
+    width: 100%;
+    /* Margini verticali ridotti */
+    margin-top: 1.5em; /* Era 2.5em */
+    margin-bottom: 0.5em; /* Era 1em */
+}
+#footer-image-container img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    /* Aumenta leggermente la dimensione relativa su mobile se necessario */
+    max-width: 85%; /* Era 80% */
+    height: auto;
+    border-radius: 8px;
+}
 
 /* Stili Errore Frontend */
-.error-message { color: #ff4444; font-weight: bold; margin-top: 2em; border: 1px solid #ff4444; padding: 1em; background-color: rgba(255, 0, 0, .1); border-radius: .5em; }
-body.error-page h1 { animation: none; text-shadow: none; color: #ff4444; }
+.error-message {
+    color: #ff4444;
+    font-weight: bold;
+    /* Margine superiore ridotto */
+    margin-top: 1em; /* Era 2em */
+    border: 1px solid #ff4444;
+    /* Padding ridotto */
+    padding: 0.8em; /* Era 1em */
+    background-color: rgba(255, 0, 0, .1);
+    border-radius: .5em;
+    /* Font size leggermente ridotto */
+    font-size: 0.9rem;
+}
+body.error-page h1 {
+    animation: none;
+    text-shadow: none;
+    color: #ff4444;
+}
+
+
+/* ========================================= */
+/* === MEDIA QUERY PER OTTIMIZZAZIONE MOBILE === */
+/* ========================================= */
+/* Target: Schermi fino a 600px di larghezza */
+@media (max-width: 600px) {
+
+    body {
+        padding: 15px; /* Riduci padding generale del body */
+    }
+
+    #logo-container img {
+        max-width: 80px; /* Logo ancora più piccolo */
+        margin-bottom: 0.8em; /* Meno spazio sotto il logo */
+    }
+
+    h1 {
+        margin-top: 0.2em;
+        margin-bottom: 0.8em; /* Meno spazio sotto H1 */
+        /* Considera di ridurre il font-size via JS per mobile se diventa troppo grande */
+    }
+
+    #countdown-container {
+        margin-top: 0.8em;
+        margin-bottom: 1.2em; /* Meno spazio per il countdown */
+        padding: 0.2em 0.1em; /* Padding minimo */
+        max-width: 95vw; /* Quasi tutta la larghezza */
+    }
+
+     #countdown-label {
+        font-size: clamp(0.7rem, 2vw, 0.8rem); /* Ancora più piccolo */
+        margin-bottom: 0.2em;
+     }
+
+    #countdown-timer {
+        font-size: clamp(1.1rem, 4.5vw, 1.8rem); /* Font timer ridotto ulteriormente */
+        letter-spacing: 0px; /* Rimuovi letter spacing per massima compattezza */
+        text-shadow: 0 0 2px lime, 0 0 5px rgba(0, 255, 0, 0.4); /* Glow minimo */
+    }
+
+    /* Separatori ':' ancora più piccoli e con meno spazio */
+    #countdown-timer span#hours::before,
+    #countdown-timer span#minutes::before,
+    #countdown-timer span#seconds::before {
+       padding: 0 0.03em;
+       font-size: 0.55em;
+    }
+    /* Lettere d,h,m,s ancora più piccole e attaccate */
+    #countdown-timer span#days::after,
+    #countdown-timer span#hours::after,
+    #countdown-timer span#minutes::after,
+    #countdown-timer span#seconds::after {
+       font-size: 0.25em;
+       padding-left: 0; /* Attaccato */
+    }
+
+     #countdown-message {
+        font-size: clamp(0.8rem, 3vw, 1rem); /* Messaggio ridotto */
+        margin-top: 0.4em; /* Meno spazio sopra */
+     }
+
+    .loader-container {
+        margin-bottom: 1.2em; /* Meno spazio sotto il loader */
+        max-width: 95%;
+    }
+
+    #loading-text-container {
+        letter-spacing: 1px; /* Spaziatura minima */
+        padding: 0.3em 0.6em; /* Padding ridotto */
+        text-shadow: 0 0 1px #fff, 0 0 3px #0ff, 0 0 5px #0ff; /* Glow ridotto */
+         /* Considera di ridurre il font-size via JS per mobile */
+    }
+
+    .link-container {
+        gap: 0.8em; /* Meno spazio tra i bottoni */
+        margin-top: 0.6em; /* Meno spazio sopra i bottoni */
+        max-width: 95%;
+    }
+
+    #loading-message, .link-container p {
+        font-size: 0.9rem; /* Testo sopra/sotto bottoni più piccolo */
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
+    }
+
+    .link-button {
+        box-shadow: 0 0 3px var(--button-neon-color, #fff), inset 0 0 1px 1px rgba(0, 0, 0, .4); /* Ombra minima */
+        /* Se controlli padding/font con JS, DEVI aggiustarlo anche lì per mobile */
+        /* Esempio se fosse CSS: */
+        /* font-size: 0.9rem; */
+        /* padding: 0.5em 0.8em; */
+    }
+
+     .link-button:hover, .link-button:active {
+        transform: scale(1.01); /* Scala minima su hover/active per feedback */
+        /* Animazione pulse potrebbe essere disattivata su mobile se troppo pesante o distrae */
+        /* animation: none; */
+     }
+
+
+    #footer-image-container {
+        margin-top: 1.2em; /* Meno spazio sopra immagine footer */
+        margin-bottom: 0.3em; /* Meno spazio sotto */
+    }
+
+    #footer-image-container img {
+        max-width: 75%; /* Immagine footer leggermente più piccola se necessario */
+        border-radius: 6px; /* Riduci leggermente radius */
+    }
+
+    .error-message {
+        margin-top: 0.8em;
+        padding: 0.6em;
+        font-size: 0.85rem;
+    }
+
+} /* Fine Media Query (max-width: 600px) */
