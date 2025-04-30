@@ -12,8 +12,9 @@
 /* ADDED: Supporto Video Background */
 /* MODIFIED: Spostato titolo più vicino al logo */
 /* MODIFIED: Abbassato blocco countdown/loader/pulsanti */
-/* FIX: Migliorato posizionamento video background per evitare zoom iniziale */
+/* FIX: Reintegrato posizionamento video background corretto */
 /* MODIFIED: Alzato blocco logo/titolo e abbassato pulsanti su mobile */
+/* MODIFIED: Ridotta leggermente dimensione countdown */
 /* =================================== */
 
 /* --- Keyframes --- */
@@ -105,7 +106,7 @@ body {
     overflow-x: hidden;
 }
 
-/* --- STILI VIDEO BACKGROUND --- */
+/* --- STILI VIDEO BACKGROUND (Corretti) --- */
 #background-video-container {
     position: fixed;
     top: 0;
@@ -178,37 +179,74 @@ h1 {
 
 /* *** STILI COUNTDOWN TIMER *** */
 #countdown-container {
-    /* Il margin-top è relativo all'elemento precedente (h1) */
-    margin-top: 1em; /* Spazio standard sopra */
+    margin-top: 1em;
     margin-bottom: 1.5em;
     width: 100%;
     max-width: 90vw;
     padding: 0.3em 0.1em;
     box-sizing: border-box;
 }
-#countdown-label { font-size: clamp(0.75rem, 2.5vw, 0.9rem); opacity: 0.8; margin-bottom: 0.3em; display: block; color: #ccc; letter-spacing: 0.5px; white-space: normal; }
-#countdown-timer { font-family: 'Orbitron', 'Courier New', Courier, monospace; font-size: clamp(1.2rem, 5vw, 2rem); font-weight: bold; color: #FFC107; letter-spacing: 0.5px; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; box-sizing: border-box; text-align: center; animation: countdown-flicker-yellow 2.5s linear infinite; }
+#countdown-label {
+    font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+    opacity: 0.8;
+    margin-bottom: 0.3em;
+    display: block;
+    color: #ccc;
+    letter-spacing: 0.5px;
+    white-space: normal;
+}
+#countdown-timer {
+    font-family: 'Orbitron', 'Courier New', Courier, monospace;
+    /* Originale: font-size: clamp(1.2rem, 5vw, 2rem); */
+    font-size: clamp(1.1rem, 4.5vw, 1.85rem); /* <<< Ridotto leggermente */
+    font-weight: bold;
+    color: #FFC107;
+    letter-spacing: 0.5px; /* Mantenuto */
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    animation: countdown-flicker-yellow 2.5s linear infinite;
+}
 #countdown-timer span { display: inline-block; padding: 0; }
-#countdown-timer span#hours::before, #countdown-timer span#minutes::before, #countdown-timer span#seconds::before { content: ':'; color: rgba(255, 193, 7, 0.6); padding: 0 0.05em; font-size: 0.6em; vertical-align: middle; text-shadow: none; }
-#countdown-timer span#days::after, #countdown-timer span#hours::after, #countdown-timer span#minutes::after, #countdown-timer span#seconds::after { content: attr(id); font-size: 0.3em; color: rgba(255, 160, 0, 0.7); text-transform: lowercase; vertical-align: middle; padding-left: 0.02em; text-shadow: none; letter-spacing: 0; display: inline-block; line-height: 1; }
-#countdown-message { font-size: clamp(0.9rem, 3.5vw, 1.1rem); font-weight: bold; color: #FFA000; text-shadow: 0 0 4px rgba(255, 160, 0, 0.6); margin-top: 0.5em; }
+#countdown-timer span#hours::before,
+#countdown-timer span#minutes::before,
+#countdown-timer span#seconds::before {
+    content: ':';
+    color: rgba(255, 193, 7, 0.6);
+    padding: 0 0.05em; /* Mantenuto piccolo */
+    font-size: 0.6em; /* Mantenuto */
+    vertical-align: middle;
+    text-shadow: none;
+}
+#countdown-timer span#days::after,
+#countdown-timer span#hours::after,
+#countdown-timer span#minutes::after,
+#countdown-timer span#seconds::after {
+    content: attr(id);
+    font-size: 0.3em; /* Mantenuto piccolo */
+    color: rgba(255, 160, 0, 0.7);
+    text-transform: lowercase;
+    vertical-align: middle;
+    padding-left: 0.02em; /* Mantenuto piccolo */
+    text-shadow: none;
+    letter-spacing: 0;
+    display: inline-block;
+    line-height: 1;
+}
+#countdown-message {
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    font-weight: bold;
+    color: #FFA000;
+    text-shadow: 0 0 4px rgba(255, 160, 0, 0.6);
+    margin-top: 0.5em;
+}
 
 /* Loader */
-.loader-container {
-    position: relative;
-    /* Il margin-top è influenzato dal margin-bottom dell'elemento precedente */
-    margin-bottom: 1.5em;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(15, 15, 15, .7);
-    border-radius: 1.5em;
-    border: 1px solid rgba(100, 100, 100, .5);
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, .5);
-    overflow: hidden;
-    z-index: 1;
-    display: flex;
-    max-width: 90%;
-}
+.loader-container { position: relative; margin-bottom: 1.5em; justify-content: center; align-items: center; background-color: rgba(15, 15, 15, .7); border-radius: 1.5em; border: 1px solid rgba(100, 100, 100, .5); box-shadow: inset 0 0 6px rgba(0, 0, 0, .5); overflow: hidden; z-index: 1; display: flex; max-width: 90%; }
 .loader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0; opacity: .5; border-radius: 1.5em; animation: loading-loop linear infinite; z-index: 1; }
 #loading-text-container { position: relative; z-index: 2; font-weight: bold; color: #fff; letter-spacing: 1.5px; text-shadow: 0 0 1px #fff, 0 0 3px #fff, 0 0 5px #0ff, 0 0 8px #0ff, 0 0 10px #0ff; overflow: hidden; white-space: nowrap; display: inline-block; animation: old-bar-flicker 2.5s linear infinite; padding: 0.4em 0.8em; }
 
@@ -243,33 +281,52 @@ body.error-page h1 { animation: none; text-shadow: none; color: #ff4444; }
 @media (max-width: 600px) {
 
     body {
-        padding: 2px 15px 15px 15px; /* <<< RIDOTTO padding-top mobile per alzare logo/titolo */
+        padding: 2px 15px 15px 15px; /* <<< padding-top mobile ridotto */
     }
 
     #logo-container img {
-        max-width: 110px; /* Logo più grande mobile */
-        margin-bottom: 0.3em; /* Spazio ridotto sotto logo mobile */
+        max-width: 110px;
+        margin-bottom: 0.3em;
     }
 
     h1 {
-        margin-top: 0.1em; /* Spazio ridotto sopra titolo mobile */
-        margin-bottom: 2.8em; /* Spazio aumentato sotto titolo mobile */
+        margin-top: 0.1em;
+        margin-bottom: 2.8em;
     }
 
     #countdown-container {
-        /* Il margin-top è influenzato dal margin-bottom di h1 */
-        margin-top: 1em; /* Spazio standard sopra countdown mobile */
+        margin-top: 1em;
         margin-bottom: 1.5em;
         padding: 0.3em 0.1em;
         max-width: 95vw;
     }
     #countdown-label { font-size: clamp(0.8rem, 2.5vw, 0.9rem); margin-bottom: 0.3em; }
-    #countdown-timer { font-size: clamp(1.6rem, 7vw, 2.5rem); color: #FFC107; letter-spacing: 0.5px; animation: countdown-flicker-yellow 2.5s linear infinite; }
-    #countdown-timer span#hours::before, #countdown-timer span#minutes::before, #countdown-timer span#seconds::before { padding: 0 0.08em; font-size: 0.6em; color: rgba(255, 193, 7, 0.6); }
-    #countdown-timer span#days::after, #countdown-timer span#hours::after, #countdown-timer span#minutes::after, #countdown-timer span#seconds::after { font-size: 0.35em; padding-left: 0.05em; color: rgba(255, 160, 0, 0.7); }
+    #countdown-timer {
+        /* Originale mobile aumentato: font-size: clamp(1.6rem, 7vw, 2.5rem); */
+        font-size: clamp(1.4rem, 6vw, 2.2rem); /* <<< Ridotto leggermente rispetto all'aumento precedente mobile */
+        color: #FFC107;
+        letter-spacing: 0.5px; /* Mantenuto */
+        animation: countdown-flicker-yellow 2.5s linear infinite;
+    }
+    #countdown-timer span#hours::before,
+    #countdown-timer span#minutes::before,
+    #countdown-timer span#seconds::before {
+        /* Originale mobile aumentato: padding: 0 0.08em; font-size: 0.6em; */
+        padding: 0 0.06em; /* <<< Leggermente ridotto */
+        font-size: 0.58em; /* <<< Leggermente ridotto */
+        color: rgba(255, 193, 7, 0.6);
+    }
+    #countdown-timer span#days::after,
+    #countdown-timer span#hours::after,
+    #countdown-timer span#minutes::after,
+    #countdown-timer span#seconds::after {
+        /* Originale mobile aumentato: font-size: 0.35em; padding-left: 0.05em; */
+        font-size: 0.32em; /* <<< Leggermente ridotto */
+        padding-left: 0.03em; /* <<< Leggermente ridotto */
+        color: rgba(255, 160, 0, 0.7);
+    }
     #countdown-message { font-size: clamp(0.9rem, 3.5vw, 1.1rem); margin-top: 0.6em; color: #FFA000; text-shadow: 0 0 4px rgba(255, 160, 0, 0.6); }
     .loader-container {
-        /* Il margin-top è influenzato dal margin-bottom dell'elemento precedente */
         margin-bottom: 1.2em;
         max-width: 95%;
     }
@@ -277,7 +334,7 @@ body.error-page h1 { animation: none; text-shadow: none; color: #ff4444; }
 
     .link-container {
         gap: 0.8em;
-        margin-top: 2.5em; /* <<< AUMENTATO Mobile: Più spazio sopra i pulsanti per abbassarli */
+        margin-top: 2.5em; /* <<< Spazio aumentato sopra pulsanti mobile */
         max-width: 95%;
     }
 
