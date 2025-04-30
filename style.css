@@ -2,7 +2,7 @@
 /* STYLE.CSS - Party Style v9.9++      */
 /* Config: Titolo(size,font), Loader(show,txt,color,size,width,speed), Bottoni(font,pad) */
 /* Animation: Titolo(flicker), Logo(float), LoaderTxt(old-bar-flicker), Btn(pulse), Countdown(flicker) */
-/* + Footer Image + Countdown Timer */
+/* + Footer Image + Countdown Timer + Video Background */
 /* FIX: Abilitato scroll per contenuto lungo */
 /* FIX: Rimosso sfondo forzato contenitori immagini */
 /* FIX: Corretta sintassi commenti CSS */
@@ -10,11 +10,76 @@
 /* MODIFIED: Aumentata dimensione logo e countdown su mobile */
 /* MODIFIED: Countdown colore giallo/arancio con flicker */
 /* ADDED: Supporto Video Background */
+/* MODIFIED: Spostato titolo più vicino al logo */
+/* MODIFIED: Abbassato blocco countdown/loader/pulsanti */
 /* =================================== */
 
 /* --- Keyframes --- */
-/* (Keyframes invariati...) */
-@keyframes loading-loop{0%{width:0%}50%{width:100%}100%{width:0%}}@keyframes old-bar-flicker{0%,100%{opacity:1;text-shadow:0 0 2px #fff,0 0 5px #fff,0 0 8px #0ff,0 0 12px #0ff,0 0 15px #0ff}50%{opacity:.6;text-shadow:0 0 2px rgba(255,255,255,.7),0 0 4px rgba(0,255,255,.5),0 0 8px rgba(0,255,255,.3)}5%{opacity:.7}8%{opacity:1}15%{opacity:.4;text-shadow:0 0 2px rgba(0,255,255,.3)}18%{opacity:1}30%{opacity:.8}40%{opacity:1}60%{opacity:.5}63%{opacity:1}75%{opacity:.7}85%{opacity:1}92%{opacity:.6}95%{opacity:1}}@keyframes pulse-intense{0%,100%{box-shadow:0 0 8px var(--button-neon-color,#fff),inset 0 0 3px 1px rgba(0,0,0,.5);transform:scale(1)}50%{box-shadow:0 0 15px var(--button-neon-color,#fff),0 0 25px var(--button-neon-color,#fff),inset 0 0 4px 1px rgba(0,0,0,.4);transform:scale(1.03)}}@keyframes logo-float{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}@keyframes high-quality-flicker{0%,100%{text-shadow:0 0 5px #fff,0 0 10px rgba(0,255,255,.9),0 0 20px rgba(0,255,255,.7),0 0 40px rgba(0,255,255,.5),0 0 70px rgba(0,255,255,.3);opacity:1}15%{text-shadow:0 0 3px rgba(255,255,255,.8),0 0 6px rgba(0,255,255,.5),0 0 10px rgba(0,255,255,.3);opacity:.8}30%{text-shadow:0 0 5px #fff,0 0 9px rgba(0,255,255,.8),0 0 18px rgba(0,255,255,.6),0 0 35px rgba(0,255,255,.4);opacity:.95}42%{text-shadow:0 0 2px rgba(255,255,255,.5);opacity:.5}47%{text-shadow:0 0 5px #fff,0 0 10px rgba(0,255,255,.9),0 0 20px rgba(0,255,255,.7),0 0 40px rgba(0,255,255,.5);opacity:1}65%{text-shadow:0 0 4px rgba(255,255,255,.9),0 0 8px rgba(0,255,255,.6);opacity:.9}80%{text-shadow:0 0 3px rgba(255,255,255,.6);opacity:.7}}@keyframes countdown-flicker-yellow{0%,100%{opacity:1;text-shadow:0 0 2px rgba(255,255,255,.7),0 0 5px #ffc107,0 0 10px #ffc107,0 0 15px #ffa000,0 0 20px rgba(255,160,0,.4)}50%{opacity:.7;text-shadow:0 0 1px rgba(255,255,255,.5),0 0 3px #ffd54f,0 0 6px rgba(255,160,0,.3)}5%,95%{opacity:.9}15%{opacity:.6;text-shadow:0 0 2px #ffa000,0 0 4px rgba(255,160,0,.3)}30%,70%{opacity:1}40%{opacity:.5;text-shadow:0 0 1px #ffc107}80%{opacity:.8}}
+
+/* Animazione per il riempimento della BARRA del loader */
+@keyframes loading-loop {
+  0% { width: 0%; }
+  50% { width: 100%; }
+  100% { width: 0%; }
+}
+
+/* *** NUOVA ANIMAZIONE FLICKER "OLD BAR" PER TESTO LOADER *** */
+@keyframes old-bar-flicker {
+  0%, 100% { opacity: 1; text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 8px #0ff, 0 0 12px #0ff, 0 0 15px #0ff; }
+  50% { opacity: 0.6; text-shadow: 0 0 2px rgba(255, 255, 255, 0.7), 0 0 4px rgba(0, 255, 255, 0.5), 0 0 8px rgba(0, 255, 255, 0.3); }
+  5% { opacity: 0.7; } 8% { opacity: 1; } 15% { opacity: 0.4; text-shadow: 0 0 2px rgba(0, 255, 255, 0.3); } 18% { opacity: 1; } 30% { opacity: 0.8; } 40% { opacity: 1; } 60% { opacity: 0.5; } 63% { opacity: 1; } 75% { opacity: 0.7; } 85% { opacity: 1; } 92% { opacity: 0.6; } 95% { opacity: 1; }
+}
+
+/* Animazione per il Glow del Pulsante su Hover/Attivo */
+@keyframes pulse-intense {
+  0%, 100% { box-shadow: 0 0 8px var(--button-neon-color, #fff), inset 0 0 3px 1px rgba(0,0,0,0.5); transform: scale(1); }
+  50% { box-shadow: 0 0 15px var(--button-neon-color, #fff), 0 0 25px var(--button-neon-color, #fff), inset 0 0 4px 1px rgba(0,0,0,0.4); transform: scale(1.03); }
+}
+
+/* Animazione Float Logo */
+@keyframes logo-float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Keyframe per Flicker Neon Titolo H1 */
+@keyframes high-quality-flicker {
+  0%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 1), 0 0 10px rgba(0, 255, 255, 0.9), 0 0 20px rgba(0, 255, 255, 0.7), 0 0 40px rgba(0, 255, 255, 0.5), 0 0 70px rgba(0, 255, 255, 0.3); opacity: 1; }
+  15% { text-shadow: 0 0 3px rgba(255, 255, 255, 0.8), 0 0 6px rgba(0, 255, 255, 0.5), 0 0 10px rgba(0, 255, 255, 0.3); opacity: 0.8; }
+  30% { text-shadow: 0 0 5px rgba(255, 255, 255, 1), 0 0 9px rgba(0, 255, 255, 0.8), 0 0 18px rgba(0, 255, 255, 0.6), 0 0 35px rgba(0, 255, 255, 0.4); opacity: 0.95; }
+  42% { text-shadow: 0 0 2px rgba(255, 255, 255, 0.5); opacity: 0.5; }
+  47% { text-shadow: 0 0 5px rgba(255, 255, 255, 1), 0 0 10px rgba(0, 255, 255, 0.9), 0 0 20px rgba(0, 255, 255, 0.7), 0 0 40px rgba(0, 255, 255, 0.5); opacity: 1; }
+  65% { text-shadow: 0 0 4px rgba(255, 255, 255, 0.9), 0 0 8px rgba(0, 255, 255, 0.6); opacity: 0.9; }
+  80% { text-shadow: 0 0 3px rgba(255, 255, 255, 0.6); opacity: 0.7; }
+}
+
+/* *** NUOVA ANIMAZIONE FLICKER PER COUNTDOWN GIALLO/ARANCIO *** */
+@keyframes countdown-flicker-yellow {
+  0%, 100% {
+    opacity: 1;
+    text-shadow:
+      0 0 2px rgba(255, 255, 255, 0.7), /* Glow bianco interno opzionale */
+      0 0 5px #FFC107,             /* Giallo/Ambra vicino */
+      0 0 10px #FFC107,            /* Giallo/Ambra medio */
+      0 0 15px #FFA000,            /* Arancio più scuro largo */
+      0 0 20px rgba(255, 160, 0, 0.4); /* Glow Arancio esterno morbido */
+  }
+  50% { /* Stato più debole */
+    opacity: 0.7;
+    text-shadow:
+      0 0 1px rgba(255, 255, 255, 0.5),
+      0 0 3px #FFD54F, /* Giallo più chiaro */
+      0 0 6px rgba(255, 160, 0, 0.3); /* Arancio debole */
+  }
+  /* Passaggi intermedi per flicker irregolare */
+  5%, 95% { opacity: 0.9; }
+  15% { opacity: 0.6; text-shadow: 0 0 2px #FFA000, 0 0 4px rgba(255, 160, 0, 0.3); }
+  30%, 70% { opacity: 1; } /* Breve picco di luminosità */
+  40% { opacity: 0.5; text-shadow: 0 0 1px #FFC107; }
+  80% { opacity: 0.8; }
+}
+
 
 /* --- Stili Generali --- */
 html {
@@ -35,11 +100,10 @@ body {
     min-height: 100vh;
     margin: 0;
     background-color: black; /* Fallback se non c'è immagine/video */
-    /* background-attachment: fixed; // Non serve più qui, gestito dal video container se necessario */
     overflow-x: hidden;
 }
 
-/* --- NUOVI STILI VIDEO BACKGROUND --- */
+/* --- STILI VIDEO BACKGROUND --- */
 #background-video-container {
     position: fixed;
     top: 0;
@@ -51,15 +115,12 @@ body {
     display: none; /* Nascosto di default, mostrato da JS se c'è video */
     background-color: black; /* Sfondo nero mentre il video carica */
 }
-
 #background-video {
     width: 100%;
     height: 100%;
     object-fit: cover; /* Copre l'area, simile a background-size: cover */
     object-position: center center;
 }
-/* --- FINE STILI VIDEO BACKGROUND --- */
-
 
 /* --- Contenuto Principale --- */
 .main-content {
@@ -70,10 +131,6 @@ body {
     align-items: center;
     width: 100%;
     max-width: 100%;
-    /* Potrebbe servire un background semi-trasparente per leggibilità sopra il video */
-    /* background-color: rgba(0, 0, 0, 0.3); */
-    /* padding: 20px; Se si aggiunge background */
-    /* border-radius: 10px; Se si aggiunge background */
 }
 
 /* --- Effetti Sfondo --- */
@@ -87,12 +144,7 @@ body {
     z-index: 0; /* Sopra il video (-1), sotto il main-content (1) */
     pointer-events: none; /* Rende cliccabile ciò che sta sotto */
 }
-
-/* Esempio Stella Cadente */
-.shooting-star {
-    /* Stili per la stella cadente */
-}
-
+.shooting-star { /* Stili per la stella cadente */ }
 
 /* Logo */
 #logo-container {}
@@ -102,7 +154,7 @@ body {
     height: auto;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 1em;
+    margin-bottom: 0.4em; /* <<< Ridotto: Meno spazio sotto il logo */
     animation: logo-float 3s ease-in-out infinite;
 }
 
@@ -111,14 +163,14 @@ h1 {
     max-width: 95%;
     line-height: 1.1;
     color: #ffffff;
-    margin-top: 0.3em;
-    margin-bottom: 1em;
+    margin-top: 0.1em;   /* <<< Ridotto: Meno spazio sopra il titolo */
+    margin-bottom: 3.5em; /* <<< Aumentato: Più spazio sotto il titolo */
     animation: high-quality-flicker 2s linear infinite;
     word-wrap: break-word;
     font-weight: bold;
 }
 
-/* *** STILI COUNTDOWN TIMER - v3 COMPATTO *** */
+/* *** STILI COUNTDOWN TIMER *** */
 #countdown-container {
     margin-top: 1em;
     margin-bottom: 1.5em;
@@ -127,7 +179,6 @@ h1 {
     padding: 0.3em 0.1em;
     box-sizing: border-box;
 }
-
 #countdown-label {
     font-size: clamp(0.75rem, 2.5vw, 0.9rem);
     opacity: 0.8;
@@ -137,12 +188,11 @@ h1 {
     letter-spacing: 0.5px;
     white-space: normal;
 }
-
 #countdown-timer {
     font-family: 'Orbitron', 'Courier New', Courier, monospace;
     font-size: clamp(1.2rem, 5vw, 2rem);
     font-weight: bold;
-    color: #FFC107;
+    color: #FFC107; /* Colore Giallo/Ambra */
     letter-spacing: 0.5px;
     line-height: 1;
     white-space: nowrap;
@@ -151,9 +201,8 @@ h1 {
     width: 100%;
     box-sizing: border-box;
     text-align: center;
-    animation: countdown-flicker-yellow 2.5s linear infinite;
+    animation: countdown-flicker-yellow 2.5s linear infinite; /* Applica flicker */
 }
-
 #countdown-timer span { display: inline-block; padding: 0; }
 #countdown-timer span#hours::before,
 #countdown-timer span#minutes::before,
@@ -162,11 +211,10 @@ h1 {
 #countdown-timer span#hours::after,
 #countdown-timer span#minutes::after,
 #countdown-timer span#seconds::after { content: attr(id); font-size: 0.3em; color: rgba(255, 160, 0, 0.7); text-transform: lowercase; vertical-align: middle; padding-left: 0.02em; text-shadow: none; letter-spacing: 0; display: inline-block; line-height: 1; }
-
 #countdown-message {
     font-size: clamp(0.9rem, 3.5vw, 1.1rem);
     font-weight: bold;
-    color: #FFA000;
+    color: #FFA000; /* Arancio per contrasto */
     text-shadow: 0 0 4px rgba(255, 160, 0, 0.6);
     margin-top: 0.5em;
 }
@@ -197,15 +245,56 @@ body.error-page h1 { animation: none; text-shadow: none; color: #ff4444; }
 /* === MEDIA QUERY PER OTTIMIZZAZIONE MOBILE === */
 /* ========================================= */
 @media (max-width: 600px) {
+
     body { padding: 15px; }
-    #logo-container img { max-width: 110px; margin-bottom: 1em; }
-    h1 { margin-top: 0.2em; margin-bottom: 0.8em; }
-    #countdown-container { margin-top: 1em; margin-bottom: 1.5em; padding: 0.3em 0.1em; max-width: 95vw; }
-    #countdown-label { font-size: clamp(0.8rem, 2.5vw, 0.9rem); margin-bottom: 0.3em; }
-    #countdown-timer { font-size: clamp(1.6rem, 7vw, 2.5rem); color: #FFC107; letter-spacing: 0.5px; animation: countdown-flicker-yellow 2.5s linear infinite; }
-    #countdown-timer span#hours::before, #countdown-timer span#minutes::before, #countdown-timer span#seconds::before { padding: 0 0.08em; font-size: 0.6em; color: rgba(255, 193, 7, 0.6); }
-    #countdown-timer span#days::after, #countdown-timer span#hours::after, #countdown-timer span#minutes::after, #countdown-timer span#seconds::after { font-size: 0.35em; padding-left: 0.05em; color: rgba(255, 160, 0, 0.7); }
-    #countdown-message { font-size: clamp(0.9rem, 3.5vw, 1.1rem); margin-top: 0.6em; color: #FFA000; text-shadow: 0 0 4px rgba(255, 160, 0, 0.6); }
+
+    #logo-container img {
+        max-width: 110px; /* Logo più grande mobile */
+        margin-bottom: 0.3em; /* <<< Ridotto Mobile: Meno spazio sotto il logo */
+    }
+
+    h1 {
+        margin-top: 0.1em; /* <<< Ridotto Mobile: Meno spazio sopra il titolo */
+        margin-bottom: 2.8em; /* <<< Aumentato Mobile: Più spazio sotto il titolo */
+    }
+
+    #countdown-container {
+        margin-top: 1em;
+        margin-bottom: 1.5em;
+        padding: 0.3em 0.1em;
+        max-width: 95vw;
+    }
+    #countdown-label {
+        font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+        margin-bottom: 0.3em;
+    }
+    #countdown-timer {
+        font-size: clamp(1.6rem, 7vw, 2.5rem); /* Countdown più grande mobile */
+        color: #FFC107;
+        letter-spacing: 0.5px;
+        animation: countdown-flicker-yellow 2.5s linear infinite;
+    }
+    #countdown-timer span#hours::before,
+    #countdown-timer span#minutes::before,
+    #countdown-timer span#seconds::before {
+        padding: 0 0.08em;
+        font-size: 0.6em;
+        color: rgba(255, 193, 7, 0.6);
+    }
+    #countdown-timer span#days::after,
+    #countdown-timer span#hours::after,
+    #countdown-timer span#minutes::after,
+    #countdown-timer span#seconds::after {
+        font-size: 0.35em;
+        padding-left: 0.05em;
+        color: rgba(255, 160, 0, 0.7);
+    }
+    #countdown-message {
+        font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+        margin-top: 0.6em;
+        color: #FFA000;
+        text-shadow: 0 0 4px rgba(255, 160, 0, 0.6);
+    }
     .loader-container { margin-bottom: 1.2em; max-width: 95%; }
     #loading-text-container { letter-spacing: 1px; padding: 0.3em 0.6em; text-shadow: 0 0 1px #fff, 0 0 3px #0ff, 0 0 5px #0ff; }
     .link-container { gap: 0.8em; margin-top: 0.6em; max-width: 95%; }
@@ -215,9 +304,6 @@ body.error-page h1 { animation: none; text-shadow: none; color: #ff4444; }
     #footer-image-container { margin-top: 1.2em; margin-bottom: 0.3em; }
     #footer-image-container img { max-width: 75%; border-radius: 6px; }
     .error-message { margin-top: 0.8em; padding: 0.6em; font-size: 0.85rem; }
+    #background-video { /* Nessuna modifica mobile specifica necessaria di solito */ }
 
-    /* Specifiche Mobile per Video (opzionale, ma buona pratica) */
-    #background-video {
-       /* object-fit: cover; già impostato sopra, di solito va bene */
-    }
 } /* Fine Media Query (max-width: 600px) */
