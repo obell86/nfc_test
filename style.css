@@ -12,6 +12,8 @@
 /* ADDED: Supporto Video Background */
 /* MODIFIED: Spostato titolo più vicino al logo */
 /* MODIFIED: Abbassato blocco countdown/loader/pulsanti */
+/* FIX: Migliorato posizionamento video background per evitare zoom iniziale */
+/* MODIFIED: Alzato blocco logo/titolo e abbassato pulsanti su mobile */
 /* =================================== */
 
 /* --- Keyframes --- */
@@ -88,10 +90,10 @@ html {
     -moz-osx-font-smoothing: grayscale;
 }
 body {
-    position: relative; /* Necessario per z-index dei figli */
+    position: relative;
     font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     box-sizing: border-box;
-    padding: 20px;
+    padding: 10px 20px 20px 20px; /* Padding top ridotto per alzare */
     text-align: center;
     color: white;
     display: flex;
@@ -99,40 +101,43 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background-color: black; /* Fallback se non c'è immagine/video */
+    background-color: black;
     overflow-x: hidden;
 }
 
 /* --- STILI VIDEO BACKGROUND --- */
 #background-video-container {
     position: fixed;
-    /* Usiamo top/left/right/bottom per definire l'area invece di width/height % */
     top: 0;
     left: 0;
-    right: 0; /* Aggiunto */
-    bottom: 0; /* Aggiunto */
-    /* width: 100%; Rimosso */
-    /* height: 100%; Rimosso */
+    right: 0;
+    bottom: 0;
     overflow: hidden;
     z-index: -1;
     display: none;
     background-color: black;
 }
-
 #background-video {
-    /* Assicuriamo che il video stesso tenti di occupare lo spazio */
-    position: absolute; /* Posizioniamo rispetto al container */
+    position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Centra il video */
-    min-width: 100%; /* Assicura che copra almeno la larghezza */
-    min-height: 100%; /* Assicura che copra almeno l'altezza */
-    width: auto; /* Lascia che il browser scelga la dimensione migliore mantenendo l'aspetto */
-    height: auto; /* Lascia che il browser scelga la dimensione migliore mantenendo l'aspetto */
-    /* object-fit: cover; Rimosso - la combinazione di min-width/height e transform fa un lavoro simile */
-    /* object-position: center center; Rimosso */
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
 }
-/* --- FINE STILI VIDEO BACKGROUND --- */
+
+/* --- Contenuto Principale --- */
+.main-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+}
 
 /* --- Effetti Sfondo --- */
 .background-effects {
@@ -142,8 +147,8 @@ body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    z-index: 0; /* Sopra il video (-1), sotto il main-content (1) */
-    pointer-events: none; /* Rende cliccabile ciò che sta sotto */
+    z-index: 0;
+    pointer-events: none;
 }
 .shooting-star { /* Stili per la stella cadente */ }
 
@@ -155,7 +160,7 @@ body {
     height: auto;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 0.4em; /* <<< Ridotto: Meno spazio sotto il logo */
+    margin-bottom: 0.4em; /* Spazio ridotto sotto logo */
     animation: logo-float 3s ease-in-out infinite;
 }
 
@@ -164,8 +169,8 @@ h1 {
     max-width: 95%;
     line-height: 1.1;
     color: #ffffff;
-    margin-top: 0.1em;   /* <<< Ridotto: Meno spazio sopra il titolo */
-    margin-bottom: 3.5em; /* <<< Aumentato: Più spazio sotto il titolo */
+    margin-top: 0.1em;   /* Spazio ridotto sopra titolo */
+    margin-bottom: 3.5em; /* Spazio aumentato sotto titolo */
     animation: high-quality-flicker 2s linear infinite;
     word-wrap: break-word;
     font-weight: bold;
@@ -173,60 +178,50 @@ h1 {
 
 /* *** STILI COUNTDOWN TIMER *** */
 #countdown-container {
-    margin-top: 1em;
+    /* Il margin-top è relativo all'elemento precedente (h1) */
+    margin-top: 1em; /* Spazio standard sopra */
     margin-bottom: 1.5em;
     width: 100%;
     max-width: 90vw;
     padding: 0.3em 0.1em;
     box-sizing: border-box;
 }
-#countdown-label {
-    font-size: clamp(0.75rem, 2.5vw, 0.9rem);
-    opacity: 0.8;
-    margin-bottom: 0.3em;
-    display: block;
-    color: #ccc;
-    letter-spacing: 0.5px;
-    white-space: normal;
-}
-#countdown-timer {
-    font-family: 'Orbitron', 'Courier New', Courier, monospace;
-    font-size: clamp(1.2rem, 5vw, 2rem);
-    font-weight: bold;
-    color: #FFC107; /* Colore Giallo/Ambra */
-    letter-spacing: 0.5px;
-    line-height: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-    box-sizing: border-box;
-    text-align: center;
-    animation: countdown-flicker-yellow 2.5s linear infinite; /* Applica flicker */
-}
+#countdown-label { font-size: clamp(0.75rem, 2.5vw, 0.9rem); opacity: 0.8; margin-bottom: 0.3em; display: block; color: #ccc; letter-spacing: 0.5px; white-space: normal; }
+#countdown-timer { font-family: 'Orbitron', 'Courier New', Courier, monospace; font-size: clamp(1.2rem, 5vw, 2rem); font-weight: bold; color: #FFC107; letter-spacing: 0.5px; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; box-sizing: border-box; text-align: center; animation: countdown-flicker-yellow 2.5s linear infinite; }
 #countdown-timer span { display: inline-block; padding: 0; }
-#countdown-timer span#hours::before,
-#countdown-timer span#minutes::before,
-#countdown-timer span#seconds::before { content: ':'; color: rgba(255, 193, 7, 0.6); padding: 0 0.05em; font-size: 0.6em; vertical-align: middle; text-shadow: none; }
-#countdown-timer span#days::after,
-#countdown-timer span#hours::after,
-#countdown-timer span#minutes::after,
-#countdown-timer span#seconds::after { content: attr(id); font-size: 0.3em; color: rgba(255, 160, 0, 0.7); text-transform: lowercase; vertical-align: middle; padding-left: 0.02em; text-shadow: none; letter-spacing: 0; display: inline-block; line-height: 1; }
-#countdown-message {
-    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
-    font-weight: bold;
-    color: #FFA000; /* Arancio per contrasto */
-    text-shadow: 0 0 4px rgba(255, 160, 0, 0.6);
-    margin-top: 0.5em;
-}
+#countdown-timer span#hours::before, #countdown-timer span#minutes::before, #countdown-timer span#seconds::before { content: ':'; color: rgba(255, 193, 7, 0.6); padding: 0 0.05em; font-size: 0.6em; vertical-align: middle; text-shadow: none; }
+#countdown-timer span#days::after, #countdown-timer span#hours::after, #countdown-timer span#minutes::after, #countdown-timer span#seconds::after { content: attr(id); font-size: 0.3em; color: rgba(255, 160, 0, 0.7); text-transform: lowercase; vertical-align: middle; padding-left: 0.02em; text-shadow: none; letter-spacing: 0; display: inline-block; line-height: 1; }
+#countdown-message { font-size: clamp(0.9rem, 3.5vw, 1.1rem); font-weight: bold; color: #FFA000; text-shadow: 0 0 4px rgba(255, 160, 0, 0.6); margin-top: 0.5em; }
 
 /* Loader */
-.loader-container { position: relative; margin-bottom: 1.5em; justify-content: center; align-items: center; background-color: rgba(15, 15, 15, .7); border-radius: 1.5em; border: 1px solid rgba(100, 100, 100, .5); box-shadow: inset 0 0 6px rgba(0, 0, 0, .5); overflow: hidden; z-index: 1; display: flex; max-width: 90%; }
+.loader-container {
+    position: relative;
+    /* Il margin-top è influenzato dal margin-bottom dell'elemento precedente */
+    margin-bottom: 1.5em;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(15, 15, 15, .7);
+    border-radius: 1.5em;
+    border: 1px solid rgba(100, 100, 100, .5);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .5);
+    overflow: hidden;
+    z-index: 1;
+    display: flex;
+    max-width: 90%;
+}
 .loader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0; opacity: .5; border-radius: 1.5em; animation: loading-loop linear infinite; z-index: 1; }
 #loading-text-container { position: relative; z-index: 2; font-weight: bold; color: #fff; letter-spacing: 1.5px; text-shadow: 0 0 1px #fff, 0 0 3px #fff, 0 0 5px #0ff, 0 0 8px #0ff, 0 0 10px #0ff; overflow: hidden; white-space: nowrap; display: inline-block; animation: old-bar-flicker 2.5s linear infinite; padding: 0.4em 0.8em; }
 
 /* Contenitore Pulsanti */
-.link-container { display: flex; flex-direction: column; align-items: center; gap: 1em; margin-top: 0.8em; width: 100%; max-width: 90%; }
+.link-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    margin-top: 1.8em; /* Spazio standard sopra i pulsanti */
+    width: 100%;
+    max-width: 90%;
+}
 #loading-message, .link-container p { font-size: 1rem; opacity: .7; margin-top: 0.5em; margin-bottom: 0.5em; }
 
 /* Pulsante Link */
@@ -247,58 +242,45 @@ body.error-page h1 { animation: none; text-shadow: none; color: #ff4444; }
 /* ========================================= */
 @media (max-width: 600px) {
 
-    body { padding: 15px; }
+    body {
+        padding: 2px 15px 15px 15px; /* <<< RIDOTTO padding-top mobile per alzare logo/titolo */
+    }
 
     #logo-container img {
         max-width: 110px; /* Logo più grande mobile */
-        margin-bottom: 0.3em; /* <<< Ridotto Mobile: Meno spazio sotto il logo */
+        margin-bottom: 0.3em; /* Spazio ridotto sotto logo mobile */
     }
 
     h1 {
-        margin-top: 0.1em; /* <<< Ridotto Mobile: Meno spazio sopra il titolo */
-        margin-bottom: 2.8em; /* <<< Aumentato Mobile: Più spazio sotto il titolo */
+        margin-top: 0.1em; /* Spazio ridotto sopra titolo mobile */
+        margin-bottom: 2.8em; /* Spazio aumentato sotto titolo mobile */
     }
 
     #countdown-container {
-        margin-top: 1em;
+        /* Il margin-top è influenzato dal margin-bottom di h1 */
+        margin-top: 1em; /* Spazio standard sopra countdown mobile */
         margin-bottom: 1.5em;
         padding: 0.3em 0.1em;
         max-width: 95vw;
     }
-    #countdown-label {
-        font-size: clamp(0.8rem, 2.5vw, 0.9rem);
-        margin-bottom: 0.3em;
+    #countdown-label { font-size: clamp(0.8rem, 2.5vw, 0.9rem); margin-bottom: 0.3em; }
+    #countdown-timer { font-size: clamp(1.6rem, 7vw, 2.5rem); color: #FFC107; letter-spacing: 0.5px; animation: countdown-flicker-yellow 2.5s linear infinite; }
+    #countdown-timer span#hours::before, #countdown-timer span#minutes::before, #countdown-timer span#seconds::before { padding: 0 0.08em; font-size: 0.6em; color: rgba(255, 193, 7, 0.6); }
+    #countdown-timer span#days::after, #countdown-timer span#hours::after, #countdown-timer span#minutes::after, #countdown-timer span#seconds::after { font-size: 0.35em; padding-left: 0.05em; color: rgba(255, 160, 0, 0.7); }
+    #countdown-message { font-size: clamp(0.9rem, 3.5vw, 1.1rem); margin-top: 0.6em; color: #FFA000; text-shadow: 0 0 4px rgba(255, 160, 0, 0.6); }
+    .loader-container {
+        /* Il margin-top è influenzato dal margin-bottom dell'elemento precedente */
+        margin-bottom: 1.2em;
+        max-width: 95%;
     }
-    #countdown-timer {
-        font-size: clamp(1.6rem, 7vw, 2.5rem); /* Countdown più grande mobile */
-        color: #FFC107;
-        letter-spacing: 0.5px;
-        animation: countdown-flicker-yellow 2.5s linear infinite;
-    }
-    #countdown-timer span#hours::before,
-    #countdown-timer span#minutes::before,
-    #countdown-timer span#seconds::before {
-        padding: 0 0.08em;
-        font-size: 0.6em;
-        color: rgba(255, 193, 7, 0.6);
-    }
-    #countdown-timer span#days::after,
-    #countdown-timer span#hours::after,
-    #countdown-timer span#minutes::after,
-    #countdown-timer span#seconds::after {
-        font-size: 0.35em;
-        padding-left: 0.05em;
-        color: rgba(255, 160, 0, 0.7);
-    }
-    #countdown-message {
-        font-size: clamp(0.9rem, 3.5vw, 1.1rem);
-        margin-top: 0.6em;
-        color: #FFA000;
-        text-shadow: 0 0 4px rgba(255, 160, 0, 0.6);
-    }
-    .loader-container { margin-bottom: 1.2em; max-width: 95%; }
     #loading-text-container { letter-spacing: 1px; padding: 0.3em 0.6em; text-shadow: 0 0 1px #fff, 0 0 3px #0ff, 0 0 5px #0ff; }
-    .link-container { gap: 0.8em; margin-top: 0.6em; max-width: 95%; }
+
+    .link-container {
+        gap: 0.8em;
+        margin-top: 2.5em; /* <<< AUMENTATO Mobile: Più spazio sopra i pulsanti per abbassarli */
+        max-width: 95%;
+    }
+
     #loading-message, .link-container p { font-size: 0.9rem; margin-top: 0.3em; margin-bottom: 0.3em; }
     .link-button { box-shadow: 0 0 3px var(--button-neon-color, #fff), inset 0 0 1px 1px rgba(0, 0, 0, .4); }
     .link-button:hover, .link-button:active { transform: scale(1.01); }
