@@ -12,8 +12,6 @@
 /* ADDED: Supporto Video Background */
 /* MODIFIED: Spostato titolo più vicino al logo */
 /* MODIFIED: Abbassato blocco countdown/loader/pulsanti */
-/* MODIFIED: Alzato blocco logo/titolo */
-/* MODIFIED: Abbassati leggermente i pulsanti */
 /* =================================== */
 
 /* --- Keyframes --- */
@@ -93,7 +91,7 @@ body {
     position: relative; /* Necessario per z-index dei figli */
     font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     box-sizing: border-box;
-    padding: 10px 20px 20px 20px; /* <<< RIDOTTO padding-top per alzare tutto */
+    padding: 20px;
     text-align: center;
     color: white;
     display: flex;
@@ -174,8 +172,7 @@ h1 {
 
 /* *** STILI COUNTDOWN TIMER *** */
 #countdown-container {
-    /* Il margin-top è relativo all'elemento precedente (h1) */
-    margin-top: 1em; /* Questo valore ora determina lo spazio sotto h1, insieme a h1.margin-bottom */
+    margin-top: 1em;
     margin-bottom: 1.5em;
     width: 100%;
     max-width: 90vw;
@@ -223,34 +220,12 @@ h1 {
 }
 
 /* Loader */
-.loader-container {
-    position: relative;
-    /* Il margin-top è influenzato dal margin-bottom dell'elemento precedente */
-    margin-bottom: 1.5em;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(15, 15, 15, .7);
-    border-radius: 1.5em;
-    border: 1px solid rgba(100, 100, 100, .5);
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, .5);
-    overflow: hidden;
-    z-index: 1;
-    display: flex;
-    max-width: 90%;
-}
+.loader-container { position: relative; margin-bottom: 1.5em; justify-content: center; align-items: center; background-color: rgba(15, 15, 15, .7); border-radius: 1.5em; border: 1px solid rgba(100, 100, 100, .5); box-shadow: inset 0 0 6px rgba(0, 0, 0, .5); overflow: hidden; z-index: 1; display: flex; max-width: 90%; }
 .loader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0; opacity: .5; border-radius: 1.5em; animation: loading-loop linear infinite; z-index: 1; }
 #loading-text-container { position: relative; z-index: 2; font-weight: bold; color: #fff; letter-spacing: 1.5px; text-shadow: 0 0 1px #fff, 0 0 3px #fff, 0 0 5px #0ff, 0 0 8px #0ff, 0 0 10px #0ff; overflow: hidden; white-space: nowrap; display: inline-block; animation: old-bar-flicker 2.5s linear infinite; padding: 0.4em 0.8em; }
 
 /* Contenitore Pulsanti */
-.link-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1em;
-    margin-top: 1.8em; /* <<< AUMENTATO: Più spazio sopra i pulsanti */
-    width: 100%;
-    max-width: 90%;
-}
+.link-container { display: flex; flex-direction: column; align-items: center; gap: 1em; margin-top: 0.8em; width: 100%; max-width: 90%; }
 #loading-message, .link-container p { font-size: 1rem; opacity: .7; margin-top: 0.5em; margin-bottom: 0.5em; }
 
 /* Pulsante Link */
@@ -271,22 +246,20 @@ body.error-page h1 { animation: none; text-shadow: none; color: #ff4444; }
 /* ========================================= */
 @media (max-width: 600px) {
 
-    body {
-        padding: 5px 15px 15px 15px; /* <<< RIDOTTO padding-top mobile */
-    }
+    body { padding: 15px; }
 
     #logo-container img {
         max-width: 110px; /* Logo più grande mobile */
-        margin-bottom: 0.3em; /* Spazio ridotto sotto logo mobile */
+        margin-bottom: 0.3em; /* <<< Ridotto Mobile: Meno spazio sotto il logo */
     }
 
     h1 {
-        margin-top: 0.1em; /* Spazio ridotto sopra titolo mobile */
-        margin-bottom: 2.8em; /* Spazio aumentato sotto titolo mobile */
+        margin-top: 0.1em; /* <<< Ridotto Mobile: Meno spazio sopra il titolo */
+        margin-bottom: 2.8em; /* <<< Aumentato Mobile: Più spazio sotto il titolo */
     }
 
     #countdown-container {
-        margin-top: 1em; /* Spazio standard sopra countdown mobile */
+        margin-top: 1em;
         margin-bottom: 1.5em;
         padding: 0.3em 0.1em;
         max-width: 95vw;
@@ -322,19 +295,9 @@ body.error-page h1 { animation: none; text-shadow: none; color: #ff4444; }
         color: #FFA000;
         text-shadow: 0 0 4px rgba(255, 160, 0, 0.6);
     }
-    .loader-container {
-        /* Il margin-top è influenzato dal margin-bottom dell'elemento precedente */
-        margin-bottom: 1.2em;
-        max-width: 95%;
-    }
+    .loader-container { margin-bottom: 1.2em; max-width: 95%; }
     #loading-text-container { letter-spacing: 1px; padding: 0.3em 0.6em; text-shadow: 0 0 1px #fff, 0 0 3px #0ff, 0 0 5px #0ff; }
-
-    .link-container {
-        gap: 0.8em;
-        margin-top: 1.5em; /* <<< AUMENTATO Mobile: Più spazio sopra i pulsanti */
-        max-width: 95%;
-    }
-
+    .link-container { gap: 0.8em; margin-top: 0.6em; max-width: 95%; }
     #loading-message, .link-container p { font-size: 0.9rem; margin-top: 0.3em; margin-bottom: 0.3em; }
     .link-button { box-shadow: 0 0 3px var(--button-neon-color, #fff), inset 0 0 1px 1px rgba(0, 0, 0, .4); }
     .link-button:hover, .link-button:active { transform: scale(1.01); }
