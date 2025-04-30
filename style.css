@@ -105,13 +105,13 @@ body {
     overflow-x: hidden;
 }
 
-/* --- STILI VIDEO BACKGROUND (Nuovo tentativo Fix Zoom Iniziale) --- */
+/* --- STILI VIDEO BACKGROUND (Tentativo #3: vw/vh Container + object-fit Video) --- */
 #background-video-container {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw; /* Forzato a larghezza viewport */
+    height: 100vh; /* Forzato a altezza viewport */
     overflow: hidden;
     z-index: -1;
     display: none;
@@ -119,15 +119,13 @@ body {
 }
 
 #background-video {
-    position: absolute; /* Posiziona rispetto al container */
-    top: 50%;          /* Centra verticalmente */
-    left: 50%;         /* Centra orizzontalmente */
-    transform: translate(-50%, -50%); /* Rifinisce la centratura */
-    min-width: 100vw;  /* Forzalo ad essere ALMENO largo quanto la viewport */
-    min-height: 100vh; /* Forzalo ad essere ALMENO alto quanto la viewport */
-    width: auto;       /* Lascia che il browser adatti mantenendo l'aspetto */
-    height: auto;      /* Lascia che il browser adatti mantenendo l'aspetto */
-    /* object-fit: cover; Non strettamente necessario con min-width/height vw/vh + transform */
+    display: block; /* Assicura che sia un blocco */
+    width: 100%; /* Riempi il container */
+    height: 100%; /* Riempi il container */
+    object-fit: cover; /* Scala mantenendo aspetto, coprendo area */
+    object-position: center center; /* Centra il video dentro l'area */
+    /* Rimuovere eventuali position: absolute o transform precedenti */
+    position: static; /* Assicura posizione di default nel flusso del container */
 }
 /* --- FINE STILI VIDEO BACKGROUND --- */
 
