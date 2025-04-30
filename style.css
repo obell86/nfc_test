@@ -106,28 +106,36 @@ body {
     overflow-x: hidden;
 }
 
-/* --- STILI VIDEO BACKGROUND (Corretti) --- */
+/* --- STILI VIDEO BACKGROUND --- */
 #background-video-container {
     position: fixed;
+    /* Usiamo top/left/right/bottom per definire l'area invece di width/height % */
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    right: 0; /* Aggiunto */
+    bottom: 0; /* Aggiunto */
+    /* width: 100%; Rimosso */
+    /* height: 100%; Rimosso */
     overflow: hidden;
     z-index: -1;
     display: none;
     background-color: black;
 }
+
 #background-video {
-    position: absolute;
+    /* Assicuriamo che il video stesso tenti di occupare lo spazio */
+    position: absolute; /* Posizioniamo rispetto al container */
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
+    transform: translate(-50%, -50%); /* Centra il video */
+    min-width: 100%; /* Assicura che copra almeno la larghezza */
+    min-height: 100%; /* Assicura che copra almeno l'altezza */
+    width: auto; /* Lascia che il browser scelga la dimensione migliore mantenendo l'aspetto */
+    height: auto; /* Lascia che il browser scelga la dimensione migliore mantenendo l'aspetto */
+    /* object-fit: cover; Rimosso - la combinazione di min-width/height e transform fa un lavoro simile */
+    /* object-position: center center; Rimosso */
 }
+/* --- FINE STILI VIDEO BACKGROUND --- */
 
 /* --- Contenuto Principale --- */
 .main-content {
