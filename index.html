@@ -3,28 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Il titolo verrà sovrascritto da JS -->
     <title>Caricamento...</title>
 
-    <!-- *** AGGIUNGI QUESTI LINK PER ORBITRON *** -->
+    <!-- === FONT === -->
+    <!-- Assicurati di includere TUTTI i font necessari (Lato, Oswald, Bebas Neue) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
-    <!-- *** FINE LINK FONT *** -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Oswald:wght@400;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <!-- Mantieni Orbitron SOLO se usato ancora dal Countdown (nel nostro ultimo CSS non lo era) -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet"> -->
+    <!-- === FINE FONT === -->
 
     <link rel="stylesheet" href="style.css">
+
+    <!-- Stile per nascondere video inizialmente -->
+    <style>
+        .video-background-container { display: none; }
+    </style>
 </head>
 <body>
-    <!-- Effetti di sfondo (es. stelle cadenti) -->
-    <div class="background-effects">
-         <div class="shooting-star"></div>
-         <!-- Aggiungi qui altri effetti se necessario -->
+    <!-- NUOVO: Contenitore Video Sfondo -->
+    <div class="video-background-container" id="video-bg-container">
+        <video autoplay muted loop playsinline id="bg-video">
+            <!-- Le source verranno aggiunte da script.js -->
+        </video>
     </div>
 
+    <!-- Vecchio contenitore effetti rimosso -->
+    <!-- <div class="background-effects"> ... </div> -->
+
+    <!-- Contenitore principale visibile -->
     <div class="main-content">
         <div id="logo-container"></div>
         <h1 id="page-title"></h1>
 
-        <!-- Contenitore Countdown Timer -->
+        <!-- Contenitore Countdown Timer (struttura semplice) -->
         <div id="countdown-container" style="display: none;">
             <p id="countdown-label"></p>
             <div id="countdown-timer">
@@ -35,25 +49,22 @@
             </div>
              <p id="countdown-message" style="display: none;"></p>
         </div>
-        <!-- Fine Contenitore Countdown Timer -->
 
         <!-- Loader -->
         <div class="loader-container" id="loader" style="display: none;">
            <div class="loader-bar"></div>
            <span id="loading-text-container"></span>
         </div>
-        <!-- Fine Loader -->
 
         <!-- Contenitore Link -->
         <div class="link-container" id="link-container">
-            <p id="loading-message">Caricamento link...</p> <!-- Messaggio iniziale -->
+            <p id="loading-message">Caricamento link...</p>
         </div>
-         <!-- Fine Contenitore Link -->
 
         <!-- Immagine Footer -->
         <div id="footer-image-container"></div>
-         <!-- Fine Immagine Footer -->
-    </div>
+
+    </div> <!-- Fine .main-content -->
 
     <script src="script.js"></script>
 </body>
