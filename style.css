@@ -106,32 +106,33 @@ body {
 /* --- STILI VIDEO BACKGROUND --- */
 #background-video-container {
     position: fixed;
+    /* Usiamo top/left/right/bottom per definire l'area invece di width/height % */
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0; /* Aggiunto */
+    bottom: 0; /* Aggiunto */
+    /* width: 100%; Rimosso */
+    /* height: 100%; Rimosso */
     overflow: hidden;
-    z-index: -1; /* Dietro a tutto il contenuto */
-    display: none; /* Nascosto di default, mostrato da JS se c'è video */
-    background-color: black; /* Sfondo nero mentre il video carica */
-}
-#background-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Copre l'area, simile a background-size: cover */
-    object-position: center center;
+    z-index: -1;
+    display: none;
+    background-color: black;
 }
 
-/* --- Contenuto Principale --- */
-.main-content {
-    position: relative;
-    z-index: 1; /* Sopra lo sfondo video/effetti */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 100%;
+#background-video {
+    /* Assicuriamo che il video stesso tenti di occupare lo spazio */
+    position: absolute; /* Posizioniamo rispetto al container */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centra il video */
+    min-width: 100%; /* Assicura che copra almeno la larghezza */
+    min-height: 100%; /* Assicura che copra almeno l'altezza */
+    width: auto; /* Lascia che il browser scelga la dimensione migliore mantenendo l'aspetto */
+    height: auto; /* Lascia che il browser scelga la dimensione migliore mantenendo l'aspetto */
+    /* object-fit: cover; Rimosso - la combinazione di min-width/height e transform fa un lavoro simile */
+    /* object-position: center center; Rimosso */
 }
+/* --- FINE STILI VIDEO BACKGROUND --- */
 
 /* --- Effetti Sfondo --- */
 .background-effects {
