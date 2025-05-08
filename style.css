@@ -1,7 +1,7 @@
 /* =================================== */
 /* STYLE.CSS - Party Style v9.9++      */
 /* ... (altri commenti) ... */
-/* ADDED: Stili per bottone toggle GUI */
+/* MODIFIED: Adjusted mobile layout for centered particles & visible buttons */
 /* =================================== */
 
 /* --- Keyframes --- */
@@ -10,7 +10,7 @@
 
 /* --- Stili Generali --- */
 html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-body { position: relative; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; box-sizing: border-box; padding: 10px 20px 20px 20px; text-align: center; color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; background-color: black; overflow: hidden; }
+body { position: relative; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; box-sizing: border-box; padding: 10px 20px 20px 20px; text-align: center; color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; background-color: black; overflow-x: hidden; overflow-y: auto; /* Permetti scroll verticale SE strettamente necessario */ }
 
 /* --- STILI VIDEO BACKGROUND --- */
 #background-video-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; display: none; background-color: black; }
@@ -25,37 +25,18 @@ body { position: relative; font-family: "Segoe UI", Roboto, Helvetica, Arial, sa
 .shooting-star { /* Stili stella cadente */ }
 
 /* Stili per Pannello lil-gui */
-.lil-gui { top: 10px !important; right: 10px !important; left: auto !important; bottom: auto !important; --text-color: #eee !important; --widget-color: #ddd !important; --title-background-color: rgba(0,0,0,0.7) !important; --widget-background-color: rgba(30,30,30,0.7) !important; --folder-background-color: rgba(20,20,20,0.7) !important; z-index: 20 !important; pointer-events: auto !important; /* Rende cliccabile */ }
+.lil-gui { top: 10px !important; right: 10px !important; left: auto !important; bottom: auto !important; --text-color: #eee !important; --widget-color: #ddd !important; --title-background-color: rgba(0,0,0,0.7) !important; --widget-background-color: rgba(30,30,30,0.7) !important; --folder-background-color: rgba(20,20,20,0.7) !important; z-index: 20 !important; pointer-events: auto !important; }
 
-/* --- NUOVO: Stili per Bottone Toggle GUI --- */
-#toggle-gui-btn {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 25; /* Sopra il GUI */
-    background-color: rgba(50, 50, 50, 0.6);
-    color: #eee;
-    border: 1px solid rgba(150, 150, 150, 0.5);
-    border-radius: 4px;
-    padding: 4px 8px;
-    font-size: 1.2em; /* Dimensione icona */
-    cursor: pointer;
-    line-height: 1; /* Per allineare bene l'icona */
-    opacity: 0.7;
-    transition: opacity 0.2s ease;
-    pointer-events: auto; /* Assicura che sia cliccabile */
-}
-#toggle-gui-btn:hover {
-    opacity: 1;
-}
-
+/* --- Stili per Bottone Toggle GUI --- */
+#toggle-gui-btn { position: fixed; top: 10px; left: 10px; z-index: 25; background-color: rgba(50, 50, 50, 0.6); color: #eee; border: 1px solid rgba(150, 150, 150, 0.5); border-radius: 4px; padding: 4px 8px; font-size: 1.2em; cursor: pointer; line-height: 1; opacity: 0.7; transition: opacity 0.2s ease; pointer-events: auto; }
+#toggle-gui-btn:hover { opacity: 1; }
 
 /* Logo */
 #logo-container {}
 #logo-container img { display: block; max-width: 100px; height: auto; margin-left: auto; margin-right: auto; margin-bottom: 0.4em; animation: logo-float 3s ease-in-out infinite; }
 
 /* Titolo H1 */
-h1 { max-width: 95%; line-height: 1.1; color: #ffffff; margin-top: 0.1em; margin-bottom: 3.5em; animation: high-quality-flicker 2s linear infinite; word-wrap: break-word; font-weight: bold; }
+h1 { max-width: 95%; line-height: 1.1; color: #ffffff; margin-top: 0.1em; margin-bottom: 3.5em; /* Spazio Desktop sotto titolo */ animation: high-quality-flicker 2s linear infinite; word-wrap: break-word; font-weight: bold; }
 
 /* *** STILI COUNTDOWN TIMER *** */
 #countdown-container { margin-top: 1em; margin-bottom: 1.5em; width: 100%; max-width: 90vw; padding: 0.3em 0.1em; box-sizing: border-box; }
@@ -76,7 +57,7 @@ h1 { max-width: 95%; line-height: 1.1; color: #ffffff; margin-top: 0.1em; margin
 #loading-message, .link-container p { font-size: 1rem; opacity: .7; margin-top: 0.5em; margin-bottom: 0.5em; }
 
 /* Pulsante Link */
-.link-button { position: relative; display: block; width: 100%; color: #fff; text-decoration: none; border-radius: 50px; font-weight: bold; border: 2px solid; border-color: var(--button-neon-color, rgba(255, 255, 255, .5)); cursor: pointer; transition: transform .2s ease, box-shadow .4s ease, border-color .4s ease, background .3s ease; box-shadow: 0 0 5px var(--button-neon-color, #fff), inset 0 0 2px 1px rgba(0, 0, 0, .4); line-height: 1.3; backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); text-shadow: 1px 1px 1px rgba(0, 0, 0, .5); pointer-events: auto; /* Assicura che i link siano cliccabili */ }
+.link-button { position: relative; display: block; width: 100%; color: #fff; text-decoration: none; border-radius: 50px; font-weight: bold; border: 2px solid; border-color: var(--button-neon-color, rgba(255, 255, 255, .5)); cursor: pointer; transition: transform .2s ease, box-shadow .4s ease, border-color .4s ease, background .3s ease; box-shadow: 0 0 5px var(--button-neon-color, #fff), inset 0 0 2px 1px rgba(0, 0, 0, .4); line-height: 1.3; backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); text-shadow: 1px 1px 1px rgba(0, 0, 0, .5); pointer-events: auto; }
 .link-button:hover, .link-button:active { transform: scale(1.02); border-color: #fff; animation: pulse-intense 1s infinite alternate; }
 
 /* STILI IMMAGINE FOOTER */
@@ -92,27 +73,66 @@ body.error-page h1 { animation: none; text-shadow: none; color: #ff4444; }
 /* === MEDIA QUERY PER OTTIMIZZAZIONE MOBILE === */
 /* ========================================= */
 @media (max-width: 600px) {
-    body { padding: 2px 15px 15px 15px; }
-    #logo-container img { max-width: 110px; margin-bottom: 0.3em; }
-    h1 { margin-top: 0.1em; margin-bottom: 2.8em; }
-    #countdown-container { margin-top: 1em; margin-bottom: 1.5em; padding: 0.3em 0.1em; max-width: 95vw; }
-    #countdown-label { font-size: clamp(0.8rem, 2.5vw, 0.9rem); margin-bottom: 0.3em; }
+
+    body {
+        padding: 2px 15px 15px 15px; /* padding-top mobile ridotto */
+        /* Rimuovi overflow:hidden se vuoi permettere scroll come fallback estremo */
+        /* overflow-y: auto; */
+    }
+
+    #logo-container img {
+        max-width: 110px;
+        margin-bottom: 0.3em;
+    }
+
+    h1 {
+        margin-top: 0.1em;
+        /* Spazio inferiore moderato, lascia spazio a countdown/loader */
+        margin-bottom: 2em;
+    }
+
+    #countdown-container {
+        /* Riduci un po' margini per guadagnare spazio se visibile */
+        margin-top: 0.8em;
+        margin-bottom: 1em;
+        padding: 0.2em 0.1em;
+        max-width: 95vw;
+    }
+    #countdown-label { font-size: clamp(0.8rem, 2.5vw, 0.9rem); margin-bottom: 0.2em; }
     #countdown-timer { font-size: clamp(1.4rem, 6vw, 2.2rem); color: #FFC107; letter-spacing: 0.5px; animation: countdown-flicker-yellow 2.5s linear infinite; }
     #countdown-timer span#hours::before, #countdown-timer span#minutes::before, #countdown-timer span#seconds::before { padding: 0 0.06em; font-size: 0.58em; color: rgba(255, 193, 7, 0.6); }
     #countdown-timer span#days::after, #countdown-timer span#hours::after, #countdown-timer span#minutes::after, #countdown-timer span#seconds::after { font-size: 0.32em; padding-left: 0.03em; color: rgba(255, 160, 0, 0.7); }
-    #countdown-message { font-size: clamp(0.9rem, 3.5vw, 1.1rem); margin-top: 0.6em; color: #FFA000; text-shadow: 0 0 4px rgba(255, 160, 0, 0.6); }
-    .loader-container { margin-bottom: 1.2em; max-width: 95%; }
+    #countdown-message { font-size: clamp(0.9rem, 3.5vw, 1.1rem); margin-top: 0.4em; color: #FFA000; text-shadow: 0 0 4px rgba(255, 160, 0, 0.6); }
+    .loader-container {
+        /* Riduci un po' margini per guadagnare spazio se visibile */
+        margin-bottom: 1em;
+        max-width: 95%;
+    }
     #loading-text-container { letter-spacing: 1px; padding: 0.3em 0.6em; text-shadow: 0 0 1px #fff, 0 0 3px #0ff, 0 0 5px #0ff; }
-    .link-container { gap: 0.8em; margin-top: 2.5em; max-width: 95%; }
+
+    .link-container {
+        gap: 0.8em;
+        /* <<< MARGINE SUPERIORE AUMENTATO per spingere giù i bottoni >>> */
+        /* Questo valore è cruciale per il bilanciamento */
+        /* Prova valori tra 4em e 8em a seconda di quanto spazio serve */
+        margin-top: 6em;
+        max-width: 95%;
+    }
+
     #loading-message, .link-container p { font-size: 0.9rem; margin-top: 0.3em; margin-bottom: 0.3em; }
     .link-button { box-shadow: 0 0 3px var(--button-neon-color, #fff), inset 0 0 1px 1px rgba(0, 0, 0, .4); }
     .link-button:hover, .link-button:active { transform: scale(1.01); }
-    #footer-image-container { margin-top: 1.2em; margin-bottom: 0.3em; }
+
+    #footer-image-container {
+        /* Riduci margine sopra per avvicinarlo ai bottoni */
+        margin-top: 1em;
+        margin-bottom: 0.3em;
+    }
     #footer-image-container img { max-width: 75%; border-radius: 6px; }
     .error-message { margin-top: 0.8em; padding: 0.6em; font-size: 0.85rem; }
 
     /* Stili GUI/Toggle Btn mobile */
-    .lil-gui { /* Potrebbe collassare, ma lo stile base rimane */ }
-    #toggle-gui-btn { font-size: 1.5em; padding: 5px 10px; } /* Leggermente più grande per tap */
+    .lil-gui { /* Potrebbe collassare automaticamente */ }
+    #toggle-gui-btn { font-size: 1.5em; padding: 5px 10px; }
 
 } /* Fine Media Query (max-width: 600px) */
