@@ -5,65 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caricamento...</title>
 
-    <!-- *** AGGIUNGI QUESTI LINK PER ORBITRON *** -->
+    <!-- Font Orbitron -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
-    <!-- *** FINE LINK FONT *** -->
 
+    <!-- Stile Principale -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- Import Map per Three.js e lil-gui -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.164.1/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.164.1/examples/jsm/",
+                "lil-gui": "https://unpkg.com/lil-gui@0.19.1/dist/lil-gui.esm.js"
+            }
+        }
+    </script>
+
 </head>
 <body>
-    <!-- Contenitore per lo Sfondo Video (nascosto di default via CSS) -->
+    <!-- Contenitore Sfondo Video -->
     <div id="background-video-container">
         <video autoplay muted loop playsinline id="background-video">
-            <!-- La source verrà aggiunta dinamicamente da JS -->
-            <source src="" type="video/mp4"> {/* Nota: il type potrebbe cambiare */}
+            <source src="" type="video/mp4">
             Il tuo browser non supporta i video HTML5.
         </video>
     </div>
 
-    <!-- Effetti di sfondo (es. stelle cadenti - Z-index deve essere gestito in CSS) -->
+    <!-- Contenitore Effetti Sfondo (incluso Canvas Particelle) -->
     <div class="background-effects">
+         <canvas id="particle-canvas"></canvas>
          <div class="shooting-star"></div>
-         <!-- Aggiungi qui altri effetti se necessario -->
+         <!-- Altri effetti qui -->
     </div>
 
+    <!-- Contenuto Principale -->
     <div class="main-content">
         <div id="logo-container"></div>
         <h1 id="page-title"></h1>
 
-        <!-- Contenitore Countdown Timer -->
+        <!-- Countdown -->
         <div id="countdown-container" style="display: none;">
             <p id="countdown-label"></p>
             <div id="countdown-timer">
-                 <span id="days">00</span>
-                 <span id="hours">00</span>
-                 <span id="minutes">00</span>
-                 <span id="seconds">00</span>
+                 <span id="days">00</span><span id="hours">00</span><span id="minutes">00</span><span id="seconds">00</span>
             </div>
              <p id="countdown-message" style="display: none;"></p>
         </div>
-        <!-- Fine Contenitore Countdown Timer -->
 
         <!-- Loader -->
         <div class="loader-container" id="loader" style="display: none;">
            <div class="loader-bar"></div>
            <span id="loading-text-container"></span>
         </div>
-        <!-- Fine Loader -->
 
-        <!-- Contenitore Link -->
+        <!-- Link -->
         <div class="link-container" id="link-container">
-            <p id="loading-message">Caricamento link...</p> <!-- Messaggio iniziale -->
+            <p id="loading-message">Caricamento link...</p>
         </div>
-         <!-- Fine Contenitore Link -->
 
-        <!-- Immagine Footer -->
+        <!-- Footer Img -->
         <div id="footer-image-container"></div>
-         <!-- Fine Immagine Footer -->
     </div>
 
-    <script src="script.js"></script>
+    <!-- Script Principale -->
+    <script type="module" src="script.js"></script>
 </body>
 </html>
