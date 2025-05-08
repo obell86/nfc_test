@@ -4,16 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caricamento...</title>
-
     <!-- Font Orbitron -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
-
     <!-- Stile Principale -->
     <link rel="stylesheet" href="style.css">
-
-    <!-- Import Map per Three.js e lil-gui -->
+    <!-- Import Map -->
     <script type="importmap">
         {
             "imports": {
@@ -23,9 +20,11 @@
             }
         }
     </script>
-
 </head>
 <body>
+    <!-- Bottone Toggle GUI -->
+    <button id="toggle-gui-btn" title="Toggle Particle Controls (H)">⚙️</button>
+
     <!-- Contenitore Sfondo Video -->
     <div id="background-video-container">
         <video autoplay muted loop playsinline id="background-video">
@@ -34,18 +33,16 @@
         </video>
     </div>
 
-    <!-- Contenitore Effetti Sfondo (incluso Canvas Particelle) -->
+    <!-- Contenitore Effetti Sfondo -->
     <div class="background-effects">
          <canvas id="particle-canvas"></canvas>
          <div class="shooting-star"></div>
-         <!-- Altri effetti qui -->
     </div>
 
     <!-- Contenuto Principale -->
     <div class="main-content">
         <div id="logo-container"></div>
         <h1 id="page-title"></h1>
-
         <!-- Countdown -->
         <div id="countdown-container" style="display: none;">
             <p id="countdown-label"></p>
@@ -54,18 +51,15 @@
             </div>
              <p id="countdown-message" style="display: none;"></p>
         </div>
-
         <!-- Loader -->
         <div class="loader-container" id="loader" style="display: none;">
            <div class="loader-bar"></div>
            <span id="loading-text-container"></span>
         </div>
-
         <!-- Link -->
         <div class="link-container" id="link-container">
             <p id="loading-message">Caricamento link...</p>
         </div>
-
         <!-- Footer Img -->
         <div id="footer-image-container"></div>
     </div>
