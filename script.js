@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ passcode: enteredPasscode }),
             });
-            if (!response.ok) { // Controlla lo stato della risposta
+            if (!response.ok) {
                 throw new Error(`Accesso Negato (${response.status})`);
             }
             const data = await response.json();
@@ -106,13 +106,13 @@ function runMainApp(airtableData) {
         calculateParticleTargetPositions(); setupParticleGUI(); window.addEventListener('resize', onParticleWindowResize); window.addEventListener('keydown', handleGuiToggle); if(toggleGuiButton) toggleGuiButton.addEventListener('click', handleGuiToggle);
         startParticleAnimation();
     }
-    function setupParticleGUI() { /* ... tuo codice ... */ }
-    function updateParticleCount() { /* ... tuo codice ... */ }
-    function calculateParticleTargetPositions() { /* ... tuo codice ... */ }
-    async function processLogoImage(imageUrl) { /* ... tuo codice ... */ }
-    function morphParticleShape(shapeIndex, instant = false) { /* ... tuo codice ... */ }
-    function changeParticleColor(colorName, forceUpdate = false) { /* ... tuo codice ... */ }
-    function onParticleWindowResize() { /* ... tuo codice ... */ }
+    function setupParticleGUI() { /* ... codice ... */ } // Incolla il tuo codice qui
+    function updateParticleCount() { /* ... codice ... */ } // Incolla il tuo codice qui
+    function calculateParticleTargetPositions() { /* ... codice ... */ } // Incolla il tuo codice qui
+    async function processLogoImage(imageUrl) { /* ... codice ... */ } // Incolla il tuo codice qui
+    function morphParticleShape(shapeIndex, instant = false) { /* ... codice ... */ } // Incolla il tuo codice qui
+    function changeParticleColor(colorName, forceUpdate = false) { /* ... codice ... */ } // Incolla il tuo codice qui
+    function onParticleWindowResize() { /* ... codice ... */ } // Incolla il tuo codice qui
     function animateParticles() {
         particleAnimationId = requestAnimationFrame(animateParticles);
         if (!particleRenderer || !particleScene || !particleCamera || !particleGeometry || !particlePoints) return;
@@ -128,10 +128,10 @@ function runMainApp(airtableData) {
         particleRenderer.render(particleScene, particleCamera);
     }
     function startParticleAnimation() { if (particleAnimationId === null) { animateParticles(); } }
-    function handleGuiToggle(event) { /* ... tuo codice ... */ }
-    function autoChangeParticleShape() { /* ... tuo codice ... */ }
-    function autoChangeParticleColor() { /* ... tuo codice ... */ }
-    function toggleAutoShapeChange(enabled) { /* ... tuo codice ... */ }
+    function handleGuiToggle(event) { /* ... codice ... */ } // Incolla il tuo codice qui
+    function autoChangeParticleShape() { /* ... codice ... */ } // Incolla il tuo codice qui
+    function autoChangeParticleColor() { /* ... codice ... */ } // Incolla il tuo codice qui
+    function toggleAutoShapeChange(enabled) { /* ... codice ... */ } // Incolla il tuo codice qui
 
     function loadData() {
         const configFields = airtableData.config;
