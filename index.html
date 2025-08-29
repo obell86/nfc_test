@@ -19,7 +19,6 @@
     </script>
 </head>
 <body>
-    <!-- STRATO 1: Login con Glitch -->
     <div id="login-layer">
         <div id="login-form-container">
             <h2 class="glitch-text" data-text="ACCESSO RISERVATO">ACCESSO RISERVATO</h2>
@@ -28,15 +27,11 @@
             <p id="login-error" style="display: none;"></p>
         </div>
     </div>
-
-    <!-- STRATO 2: Caricamento -->
     <div id="loading-layer" style="display: none;">
         <h2 class="glitch-text" data-text="AUTENTICAZIONE...">AUTENTICAZIONE...</h2>
         <div class="loader-bar-animation"></div>
         <p id="loading-status">Verifica in corso...</p>
     </div>
-
-    <!-- STRATO 3: Contenuto Principale (nascosto) -->
     <div id="main-content-layer" style="visibility: hidden; opacity: 0;">
         <button id="toggle-gui-btn" title="Toggle Particle Controls (H)">⚙️</button>
         <div id="background-video-container">
@@ -54,9 +49,6 @@
             <div id="footer-image-container"></div>
         </div>
     </div>
-    
-    <!-- Script di Login (leggero) -->
-    <script src="login.js"></script>
-    <!-- Lo script pesante delle particelle verrà caricato dopo il login -->
+    <script type="module" src="script.js"></script>
 </body>
 </html>
