@@ -5,6 +5,8 @@ import { GUI } from 'lil-gui';
 // LOGICA DI LOGIN E FLUSSO PRINCIPALE
 // ===================================
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("LOGIN SCRIPT: DOMContentLoaded - Pagina caricata.");
+    
     const loginLayer = document.getElementById('login-layer');
     const loadingLayer = document.getElementById('loading-layer');
     const mainContentLayer = document.getElementById('main-content-layer');
@@ -13,13 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginError = document.getElementById('login-error');
 
     async function init() {
+        console.log("LOGIN SCRIPT: init() - Controllo sessione.");
         if (sessionStorage.getItem('isAuthenticated_v2') === 'true') {
             const storedData = sessionStorage.getItem('airtableData');
             if (storedData) {
+                console.log("LOGIN SCRIPT: Utente già autenticato, avvio il contenuto principale.");
                 await showMainContent(JSON.parse(storedData));
                 return;
             }
         }
+        console.log("LOGIN SCRIPT: Mostro il form di login.");
         loginLayer.style.display = 'flex';
         loginButton.addEventListener('click', handleLoginAttempt);
         passcode_input.addEventListener('keypress', (e) => {
@@ -28,18 +33,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function handleLoginAttempt() {
+        console.log("LOGIN SCRIPT: Tentativo di login avviato.");
         const enteredPasscode = passcode_input.value;
         if (!enteredPasscode) return;
         loginButton.disabled = true;
         loginError.style.display = 'none';
         try {
+            console.log("LOGIN SCRIPT: Chiamata alla Netlify Function...");
             const response = await fetch('/.netlify/functions/check-passcode', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ passcode: enteredPasscode }),
             });
+            console.log("LOGIN SCRIPT: Risposta ricevuta dalla funzione. Status:", response.status);
             const data = await response.json();
             if (data.success) {
+                console.log("LOGIN SCRIPT: Successo! Salvo sessione e avvio contenuto.");
                 sessionStorage.setItem('isAuthenticated_v2', 'true');
                 sessionStorage.setItem('airtableData', JSON.stringify(data));
                 await showMainContent(data);
@@ -47,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(data.message || 'Accesso Negato');
             }
         } catch (error) {
+            console.error("LOGIN SCRIPT: Errore durante il login:", error);
             loginError.textContent = 'ACCESSO NEGATO';
             loginError.style.display = 'block';
             setTimeout(() => { loginError.style.display = 'none'; }, 2000);
@@ -55,14 +65,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function showMainContent(airtableData) {
+        console.log("LOGIN SCRIPT: showMainContent() - Preparo la transizione.");
         loadingLayer.style.display = 'flex';
         loginLayer.style.opacity = '0';
         setTimeout(() => { loginLayer.style.display = 'none'; }, 500);
         
+        console.log("LOGIN SCRIPT: Eseguo runMainApp()...");
         runMainApp(airtableData);
         
         await new Promise(resolve => setTimeout(resolve, 2500));
         
+        console.log("LOGIN SCRIPT: Transizione completata, mostro il contenuto.");
         mainContentLayer.style.visibility = 'visible';
         mainContentLayer.style.opacity = '1';
         loadingLayer.style.opacity = '0';
@@ -76,6 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // APP PRINCIPALE (THREE.JS)
 // ===================================
 function runMainApp(airtableData) {
+    console.log("MAIN APP: runMainApp() è stata chiamata con successo!");
+
     const fieldMap = { config: { title: 'Titolo Pagina', titleSize: 'Dimensione Titolo', logoUrl: 'Logo', footerImageAlt: 'Alt Img Footer', footerImageUrl: 'Immagine Footer', backgroundAttachment: 'Sfondo', showLoader: 'Mostra Loader', loaderText: 'Testo Loader', loaderBarColor: 'Colore Barra Loader', loaderTextSize: 'Dimensione Testo Loader', loaderWidth: 'Larghezza Loader', loaderBarSpeed: 'Velocità Barra Loader', buttonFontSize: 'Dimensione Font Pulsanti', buttonPadding: 'Padding Pulsanti', showCountdown: 'Mostra Countdown', countdownTarget: 'Data Target Countdown', countdownLabel: 'Etichetta Countdown', linkedLinks: 'Link Attivi' }, links: { label: 'Etichetta', url: 'Scrivi URL', color: 'Scrivi Colore Pulsante' } };
     const defaultButtonColor = 'linear-gradient(45deg, #ff00ff, #00ffff)';
     const titleElement = document.getElementById('page-title'); const logoContainer = document.getElementById('logo-container'); const linkContainer = document.getElementById('link-container'); const loadingMessage = document.getElementById('loading-message'); const loader = document.getElementById('loader'); const loaderTextElement = loader ? loader.querySelector('#loading-text-container') : null; const loaderBarElement = loader ? loader.querySelector('.loader-bar') : null; const footerImageContainer = document.getElementById('footer-image-container'); const countdownContainer = document.getElementById('countdown-container'); const countdownLabelElement = document.getElementById('countdown-label'); const daysElement = document.getElementById('days'); const hoursElement = document.getElementById('hours'); const minutesElement = document.getElementById('minutes'); const secondsElement = document.getElementById('seconds'); const countdownMessageElement = document.getElementById('countdown-message'); const backgroundVideoContainer = document.getElementById('background-video-container'); const backgroundVideo = document.getElementById('background-video'); const backgroundVideoSource = backgroundVideo ? backgroundVideo.querySelector('source') : null; let countdownIntervalId = null; const toggleGuiButton = document.getElementById('toggle-gui-btn');
@@ -86,80 +101,38 @@ function runMainApp(airtableData) {
     let colorMorphStartTime = -1;
     const getField = (fields, fieldName, defaultValue = null) => { return (fields && fields[fieldName] !== undefined && fields[fieldName] !== null && fields[fieldName] !== '') ? fields[fieldName] : defaultValue; }; const getAttachmentInfo = (fields, fieldName) => { const att = getField(fields, fieldName); if (Array.isArray(att) && att.length > 0) { const fA = att[0]; let url = fA.url; if (fA.type && fA.type.startsWith('image/') && fA.thumbnails && fA.thumbnails.large) { url = fA.thumbnails.large.url; } return { url: url, type: fA.type || null, filename: fA.filename || null }; } return null; };
     function initParticles() {
-        console.log("Initializing particle system...");
+        console.log("MAIN APP: initParticles() chiamata.");
         particleCanvasElement = document.getElementById('particle-canvas'); if (!particleCanvasElement) { console.error("Particle canvas element not found!"); return; }
         particleScene = new THREE.Scene();
         const isMobile = window.innerWidth <= mobileBreakpoint; const cameraZ = isMobile ? 35 : 40;
         particleCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000); particleCamera.position.z = cameraZ;
         particleRenderer = new THREE.WebGLRenderer({ canvas: particleCanvasElement, antialias: true, alpha: true }); particleRenderer.setSize(window.innerWidth, window.innerHeight); particleRenderer.setPixelRatio(window.devicePixelRatio); particleRenderer.setClearColor(0x000000, 0);
         const initialParticleSize = isMobile ? 0.1 : 0.15; particleParams.particleSize = initialParticleSize; particleGeometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(numParticlesMax * 3);
-        const colors = new Float32Array(numParticlesMax * 3);
-        const initialPositions = new Float32Array(numParticlesMax * 3);
-        const initialColors = new Float32Array(numParticlesMax * 3);
-        const targetColors = new Float32Array(numParticlesMax * 3);
+        const positions = new Float32Array(numParticlesMax * 3); const colors = new Float32Array(numParticlesMax * 3); const initialPositions = new Float32Array(numParticlesMax * 3); const initialColors = new Float32Array(numParticlesMax * 3); const targetColors = new Float32Array(numParticlesMax * 3);
         const initialColor = new THREE.Color(particleParams.guiControls.colorPreset);
-        for (let i = 0; i < particleParams.particleCount; i++) {
-             const i3 = i * 3;
-             positions[i3] = (Math.random() - 0.5) * 0.1; positions[i3 + 1] = (Math.random() - 0.5) * 0.1; positions[i3 + 2] = (Math.random() - 0.5) * 0.1;
-             initialColor.toArray(colors, i3); initialColor.toArray(initialColors, i3); initialColor.toArray(targetColors, i3);
-             initialPositions[i3] = positions[i3]; initialPositions[i3 + 1] = positions[i3 + 1]; initialPositions[i3 + 2] = positions[i3 + 2];
-        }
-        particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-        particleGeometry.setAttribute('initialPosition', new THREE.BufferAttribute(initialPositions, 3));
-        particleGeometry.setAttribute('initialColor', new THREE.BufferAttribute(initialColors, 3));
-        particleGeometry.setAttribute('targetColor', new THREE.BufferAttribute(targetColors, 3));
+        for (let i = 0; i < particleParams.particleCount; i++) { const i3 = i * 3; positions[i3] = (Math.random() - 0.5) * 0.1; positions[i3 + 1] = (Math.random() - 0.5) * 0.1; positions[i3 + 2] = (Math.random() - 0.5) * 0.1; initialColor.toArray(colors, i3); initialColor.toArray(initialColors, i3); initialColor.toArray(targetColors, i3); initialPositions[i3] = positions[i3]; initialPositions[i3 + 1] = positions[i3 + 1]; initialPositions[i3 + 2] = positions[i3 + 2]; }
+        particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3)); particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3)); particleGeometry.setAttribute('initialPosition', new THREE.BufferAttribute(initialPositions, 3)); particleGeometry.setAttribute('initialColor', new THREE.BufferAttribute(initialColors, 3)); particleGeometry.setAttribute('targetColor', new THREE.BufferAttribute(targetColors, 3));
         particleShapes.forEach(shapeName => { particleGeometry.setAttribute(`targetPosition${shapeName}`, new THREE.BufferAttribute(new Float32Array(numParticlesMax * 3), 3)); });
         particleMaterial = new THREE.PointsMaterial({ size: initialParticleSize, vertexColors: true, sizeAttenuation: true, depthWrite: false });
         particlePoints = new THREE.Points(particleGeometry, particleMaterial); particleScene.add(particlePoints);
-        calculateParticleTargetPositions();
-        setupParticleGUI(); window.addEventListener('resize', onParticleWindowResize); window.addEventListener('keydown', handleGuiToggle); if(toggleGuiButton) toggleGuiButton.addEventListener('click', handleGuiToggle);
-        console.log("Particle system initialization complete."); startParticleAnimation();
+        calculateParticleTargetPositions(); setupParticleGUI(); window.addEventListener('resize', onParticleWindowResize); window.addEventListener('keydown', handleGuiToggle); if(toggleGuiButton) toggleGuiButton.addEventListener('click', handleGuiToggle);
+        console.log("MAIN APP: Particle system initialization complete."); startParticleAnimation();
     }
-    function setupParticleGUI() {
-        if (particleGui) particleGui.destroy();
-        particleGui = new GUI(); particleGui.title("Particles (H / ⚙️)");
-        particleGui.add(particleParams, 'particleCount', 100, numParticlesMax, 1).name('Count').onChange(updateParticleCount);
-        particleGui.add(particleParams, 'particleSize', 0.01, 1, 0.01).name('Size').onChange(value => { if (particleMaterial) particleMaterial.size = value; });
-        particleGui.add(particleParams, 'morphDuration', 0.5, 5, 0.1).name('Shape Morph (s)');
-        particleGui.add(particleParams, 'colorMorphDuration', 0.2, 4, 0.1).name('Color Morph (s)');
-        particleGui.add(particleParams, 'autorotate').name('Auto Rotate');
-        particleGui.add(particleParams, 'autoRotateSpeed', 0, 1, 0.05).name('Rotate Speed');
-        particleGui.add(particleParams, 'autoShapeChangeEnabled').name('Auto Shape').onChange(toggleAutoShapeChange);
-        particleGui.add(particleParams.guiControls, 'shape', particleShapes).name('Shape').onChange(value => { const newIndex = particleShapes.indexOf(value); if (newIndex !== -1) { if (value === 'Logo' && !logoShapeCalculated) { return; } currentShapeIndex = newIndex; morphParticleShape(currentShapeIndex); } });
-        particleGui.add(particleParams.guiControls, 'colorPreset', particleColorPresets).name('Color Preset').onChange(value => { changeParticleColor(value); });
-        particleGui.controllers.find(c => c.property === 'particleSize')?.setValue(particleParams.particleSize);
-        particleGui.controllers.find(c => c.property === 'shape')?.setValue(particleParams.guiControls.shape);
-        particleGui.domElement.style.display = 'none';
-    }
-    function updateParticleCount() { if (!particleGeometry) return; calculateParticleTargetPositions(); changeParticleColor(particleParams.guiControls.colorPreset, true); morphParticleShape(currentShapeIndex, true); particleGeometry.setDrawRange(0, particleParams.particleCount); }
-    function calculateParticleTargetPositions() { const isMobile = window.innerWidth <= mobileBreakpoint; const baseRadius = isMobile ? 12 : 15; const height = baseRadius * 1.5; const getTargetBuffer = (shapeName) => particleGeometry.attributes[`targetPosition${shapeName}`].array; const targets = { Sphere: getTargetBuffer('Sphere'), Cube: getTargetBuffer('Cube'), Torus: getTargetBuffer('Torus'), Spiral: getTargetBuffer('Spiral'), Pyramid: getTargetBuffer('Pyramid'), Cylinder: getTargetBuffer('Cylinder') }; for (let i = 0; i < particleParams.particleCount; i++) { const i3 = i * 3; const phiS = Math.acos(-1 + (2 * i) / particleParams.particleCount); const thetaS = Math.sqrt(particleParams.particleCount * Math.PI) * phiS; targets.Sphere[i3]=baseRadius*Math.sin(phiS)*Math.cos(thetaS); targets.Sphere[i3+1]=baseRadius*Math.sin(phiS)*Math.sin(thetaS); targets.Sphere[i3+2]=baseRadius*Math.cos(phiS); const hsC = baseRadius*0.8; const sideC=Math.floor(Math.random()*6); const xC=(Math.random()-0.5)*2*hsC; const yC=(Math.random()-0.5)*2*hsC; if(sideC===0){targets.Cube[i3]=xC; targets.Cube[i3+1]=yC; targets.Cube[i3+2]=hsC;} else if(sideC===1){targets.Cube[i3]=xC; targets.Cube[i3+1]=yC; targets.Cube[i3+2]=-hsC;} else if(sideC===2){targets.Cube[i3]=hsC; targets.Cube[i3+1]=xC; targets.Cube[i3+2]=yC;} else if(sideC===3){targets.Cube[i3]=-hsC; targets.Cube[i3+1]=xC; targets.Cube[i3+2]=yC;} else if(sideC===4){targets.Cube[i3]=xC; targets.Cube[i3+1]=hsC; targets.Cube[i3+2]=yC;} else{targets.Cube[i3]=xC; targets.Cube[i3+1]=-hsC; targets.Cube[i3+2]=yC;} const trT=baseRadius*0.7; const turT=baseRadius*0.3; const uT=Math.random()*Math.PI*2; const vT=Math.random()*Math.PI*2; targets.Torus[i3]=(trT+turT*Math.cos(vT))*Math.cos(uT); targets.Torus[i3+1]=(trT+turT*Math.cos(vT))*Math.sin(uT); targets.Torus[i3+2]=turT*Math.sin(vT); const turnsSp=5; const spreadSp=baseRadius*1.5; const tSp=(i/(particleParams.particleCount-1)); const angleSp=tSp*Math.PI*2*turnsSp; const rSp=tSp*spreadSp*0.5; targets.Spiral[i3]=rSp*Math.cos(angleSp); targets.Spiral[i3+1]=rSp*Math.sin(angleSp); targets.Spiral[i3+2]=(tSp-0.5)*spreadSp*0.7; const yP = (Math.random() - 0.5) * height; const scaleFactor = (height / 2 - yP) / height; const xP_base = (Math.random() - 0.5) * baseRadius * 2; const zP_base = (Math.random() - 0.5) * baseRadius * 2; targets.Pyramid[i3] = xP_base * scaleFactor; targets.Pyramid[i3+1] = yP; targets.Pyramid[i3+2] = zP_base * scaleFactor; const cylRadius = baseRadius * 0.6; const cylHeight = height; const capRatio = 0.1; const randCy = Math.random(); const angleCy = Math.random() * Math.PI * 2; if (randCy < capRatio) { const rCy = Math.sqrt(Math.random()) * cylRadius; targets.Cylinder[i3] = rCy * Math.cos(angleCy); targets.Cylinder[i3+1] = cylHeight / 2; targets.Cylinder[i3+2] = rCy * Math.sin(angleCy); } else if (randCy < capRatio * 2) { const rCy = Math.sqrt(Math.random()) * cylRadius; targets.Cylinder[i3] = rCy * Math.cos(angleCy); targets.Cylinder[i3+1] = -cylHeight / 2; targets.Cylinder[i3+2] = rCy * Math.sin(angleCy); } else { targets.Cylinder[i3] = cylRadius * Math.cos(angleCy); targets.Cylinder[i3+1] = (Math.random() - 0.5) * cylHeight; targets.Cylinder[i3+2] = cylRadius * Math.sin(angleCy); } } particleShapes.filter(s => s !== 'Logo').forEach(shapeName => { const attr = particleGeometry.attributes[`targetPosition${shapeName}`]; if (attr) attr.needsUpdate = true; }); }
-    async function processLogoImage(imageUrl) { if (!imageUrl || !particleGeometry) return; logoShapeCalculated = false; try { const img = new Image(); img.crossOrigin = "Anonymous"; img.onload = () => { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d', { willReadFrequently: true }); const maxDim = 100; let imgWidth = img.width; let imgHeight = img.height; if (imgWidth > maxDim || imgHeight > maxDim) { const ratio = Math.min(maxDim / imgWidth, maxDim / imgHeight); imgWidth *= ratio; imgHeight *= ratio; } canvas.width = Math.round(imgWidth); canvas.height = Math.round(imgHeight); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height); const data = imageData.data; const pixelCoords = []; const alphaThreshold = 120; for (let y = 0; y < canvas.height; y++) { for (let x = 0; x < canvas.width; x++) { const index = (y * canvas.width + x) * 4; const alpha = data[index + 3]; if (alpha > alphaThreshold) { pixelCoords.push({ x, y }); } } } if (pixelCoords.length === 0) { currentShapeIndex = 0; morphParticleShape(currentShapeIndex, true); if(particleGui) particleGui.controllers.find(c => c.property === 'shape')?.setValue(particleShapes[0]); return; } const targetBuffer = particleGeometry.attributes.targetPositionLogo.array; const logoScale = 20; const depth = 2; for (let i = 0; i < particleParams.particleCount; i++) { const i3 = i * 3; const coord = pixelCoords[Math.floor(Math.random() * pixelCoords.length)]; targetBuffer[i3] = (coord.x / canvas.width - 0.5) * logoScale; targetBuffer[i3 + 1] = -(coord.y / canvas.height - 0.5) * logoScale; targetBuffer[i3 + 2] = (Math.random() - 0.5) * depth; } particleGeometry.attributes.targetPositionLogo.needsUpdate = true; logoShapeCalculated = true; currentShapeIndex = particleShapes.indexOf('Logo'); morphParticleShape(currentShapeIndex, true); if(particleGui) particleGui.controllers.find(c => c.property === 'shape')?.setValue('Logo'); }; img.onerror = () => { logoShapeCalculated = false; currentShapeIndex = 0; morphParticleShape(currentShapeIndex, true); if(particleGui) particleGui.controllers.find(c => c.property === 'shape')?.setValue(particleShapes[0]); }; img.src = imageUrl; } catch (error) { logoShapeCalculated = false; currentShapeIndex = 0; morphParticleShape(currentShapeIndex, true); if(particleGui) particleGui.controllers.find(c => c.property === 'shape')?.setValue(particleShapes[0]); } }
-    function morphParticleShape(shapeIndex, instant = false) { if (shapeIndex < 0 || shapeIndex >= particleShapes.length) { return; } const shapeName = particleShapes[shapeIndex]; if (shapeName === 'Logo' && !logoShapeCalculated) { return; } const targetAttributeName = `targetPosition${shapeName}`; if (!particleGeometry || !particleGeometry.attributes[targetAttributeName]) { return; } const targetPosArray = particleGeometry.attributes[targetAttributeName].array; const currentPosAttr = particleGeometry.attributes.position; const initialPosAttr = particleGeometry.attributes.initialPosition; if (instant) { for (let i = 0; i < particleParams.particleCount; i++) { const i3 = i * 3; currentPosAttr.array[i3] = targetPosArray[i3]; currentPosAttr.array[i3 + 1] = targetPosArray[i3 + 1]; currentPosAttr.array[i3 + 2] = targetPosArray[i3 + 2]; } currentPosAttr.needsUpdate = true; morphStartTime = -1; } else { for (let i = 0; i < particleParams.particleCount; i++) { const i3 = i * 3; initialPosAttr.array[i3] = currentPosAttr.array[i3]; initialPosAttr.array[i3 + 1] = currentPosAttr.array[i3 + 1]; initialPosAttr.array[i3 + 2] = currentPosAttr.array[i3 + 2]; } initialPosAttr.needsUpdate = true; morphStartTime = particleClock.getElapsedTime(); } particleGeometry.setDrawRange(0, particleParams.particleCount); }
-    function changeParticleColor(colorName, forceUpdate = false) { if (!particleGeometry || !particleGeometry.attributes.color) return; if (forceUpdate) { particleParams.guiControls.colorPreset = colorName; const colorAttribute = particleGeometry.attributes.color; const initialColorAttribute = particleGeometry.attributes.initialColor; const targetColorAttribute = particleGeometry.attributes.targetColor; const tempColor = new THREE.Color(); let needsUpdate = false; if (colorName === 'multi') { for (let i = 0; i < particleParams.particleCount; i++) { tempColor.setHSL(Math.random(), 0.9, 0.6); tempColor.toArray(colorAttribute.array, i * 3); tempColor.toArray(initialColorAttribute.array, i*3); tempColor.toArray(targetColorAttribute.array, i*3); } needsUpdate = true; } else { try { tempColor.set(colorName); } catch (e) { tempColor.set('orange'); particleParams.guiControls.colorPreset = 'orange'; if(particleGui) particleGui.controllers.find(c => c.property === 'colorPreset')?.setValue('orange'); } for (let i = 0; i < particleParams.particleCount; i++) { const i3 = i * 3; if (colorAttribute.array[i3] !== tempColor.r || colorAttribute.array[i3+1] !== tempColor.g || colorAttribute.array[i3+2] !== tempColor.b) { tempColor.toArray(colorAttribute.array, i3); tempColor.toArray(initialColorAttribute.array, i3); tempColor.toArray(targetColorAttribute.array, i3); needsUpdate = true; } else { tempColor.toArray(initialColorAttribute.array, i3); tempColor.toArray(targetColorAttribute.array, i3); } } } if (needsUpdate) { colorAttribute.needsUpdate = true; initialColorAttribute.needsUpdate = true; targetColorAttribute.needsUpdate = true; } colorMorphStartTime = -1; return; } if (colorName === particleParams.guiControls.colorPreset && colorMorphStartTime < 0) return; particleParams.guiControls.colorPreset = colorName; const currentColorAttr = particleGeometry.attributes.color; const initialColorAttr = particleGeometry.attributes.initialColor; const targetColorAttr = particleGeometry.attributes.targetColor; const tempColor = new THREE.Color(); initialColorAttr.array.set(currentColorAttr.array); initialColorAttr.needsUpdate = true; if (colorName === 'multi') { for (let i = 0; i < particleParams.particleCount; i++) { tempColor.setHSL(Math.random(), 0.9, 0.6); tempColor.toArray(targetColorAttr.array, i * 3); } } else { try { tempColor.set(colorName); } catch (e) { tempColor.set('orange'); particleParams.guiControls.colorPreset = 'orange'; if(particleGui) particleGui.controllers.find(c => c.property === 'colorPreset')?.setValue('orange'); } for (let i = 0; i < particleParams.particleCount; i++) { tempColor.toArray(targetColorAttr.array, i * 3); } } targetColorAttr.needsUpdate = true; colorMorphStartTime = particleClock.getElapsedTime(); }
-    function onParticleWindowResize() { if (!particleCamera || !particleRenderer || !particleMaterial) return; const width = window.innerWidth; const height = window.innerHeight; const isMobile = width <= mobileBreakpoint; particleCamera.position.z = isMobile ? 35 : 40; particleCamera.aspect = width / height; particleCamera.updateProjectionMatrix(); particleRenderer.setSize(width, height); const newSize = isMobile ? 0.1 : 0.15; particleParams.particleSize = newSize; particleMaterial.size = newSize; particleGui?.controllers.find(c => c.property === 'particleSize')?.setValue(newSize); }
-    function animateParticles() {
-        particleAnimationId = requestAnimationFrame(animateParticles);
-        if (!particleRenderer || !particleScene || !particleCamera || !particleGeometry || !particlePoints) return;
-        const elapsedTime = particleClock.getElapsedTime(); const deltaTime = particleClock.getDelta();
-        const positionAttribute = particleGeometry.attributes.position; const initialPositionAttribute = particleGeometry.attributes.initialPosition;
-        const colorAttribute = particleGeometry.attributes.color; const initialColorAttribute = particleGeometry.attributes.initialColor; const targetColorAttribute = particleGeometry.attributes.targetColor;
-        let didUpdatePositions = false; let didUpdateColors = false;
-        if (morphStartTime >= 0) { const morphElapsedTime = elapsedTime - morphStartTime; const morphProgress = Math.min(morphElapsedTime / particleParams.morphDuration, 1.0); const targetAttributeName = `targetPosition${particleShapes[currentShapeIndex]}`; const targetAttribute = particleGeometry.attributes[targetAttributeName]; if (targetAttribute) { for (let i = 0; i < particleParams.particleCount; i++) { const i3 = i * 3; positionAttribute.array[i3] = THREE.MathUtils.lerp(initialPositionAttribute.array[i3], targetAttribute.array[i3], morphProgress); positionAttribute.array[i3 + 1] = THREE.MathUtils.lerp(initialPositionAttribute.array[i3 + 1], targetAttribute.array[i3 + 1], morphProgress); positionAttribute.array[i3 + 2] = THREE.MathUtils.lerp(initialPositionAttribute.array[i3 + 2], targetAttribute.array[i3 + 2], morphProgress); } didUpdatePositions = true; if (morphProgress >= 1.0) { morphStartTime = -1; } } else { morphStartTime = -1; } }
-        if (colorMorphStartTime >= 0) { const colorMorphElapsedTime = elapsedTime - colorMorphStartTime; const colorMorphProgress = Math.min(colorMorphElapsedTime / particleParams.colorMorphDuration, 1.0); for (let i = 0; i < particleParams.particleCount; i++) { const i3 = i * 3; colorAttribute.array[i3] = THREE.MathUtils.lerp(initialColorAttribute.array[i3], targetColorAttribute.array[i3], colorMorphProgress); colorAttribute.array[i3 + 1] = THREE.MathUtils.lerp(initialColorAttribute.array[i3 + 1], targetColorAttribute.array[i3 + 1], colorMorphProgress); colorAttribute.array[i3 + 2] = THREE.MathUtils.lerp(initialColorAttribute.array[i3 + 2], targetColorAttribute.array[i3 + 2], colorMorphProgress); } didUpdateColors = true; if (colorMorphProgress >= 1.0) { colorMorphStartTime = -1; } }
-        if (particleParams.autorotate && morphStartTime < 0 && particlePoints) { particlePoints.rotation.y += particleParams.autoRotateSpeed * deltaTime; particlePoints.rotation.x += particleParams.autoRotateSpeed * 0.5 * deltaTime; }
-        if (didUpdatePositions) { positionAttribute.needsUpdate = true; }
-        if (didUpdateColors) { colorAttribute.needsUpdate = true; }
-        particleRenderer.render(particleScene, particleCamera);
-    }
+    function setupParticleGUI() { /* ... tuo codice ... */ }
+    function updateParticleCount() { /* ... tuo codice ... */ }
+    function calculateParticleTargetPositions() { /* ... tuo codice ... */ }
+    async function processLogoImage(imageUrl) { /* ... tuo codice ... */ }
+    function morphParticleShape(shapeIndex, instant = false) { /* ... tuo codice ... */ }
+    function changeParticleColor(colorName, forceUpdate = false) { /* ... tuo codice ... */ }
+    function onParticleWindowResize() { /* ... tuo codice ... */ }
+    function animateParticles() { /* ... tuo codice ... */ }
     function startParticleAnimation() { if (particleAnimationId === null) { animateParticles(); } }
-    function handleGuiToggle(event) { if ((event.type === 'keydown' && event.key.toLowerCase() === 'h') || event.type === 'click') { if (particleGui) { const guiElement = particleGui.domElement; if (guiElement.style.display === 'none') { guiElement.style.display = ''; } else { guiElement.style.display = 'none'; } } } }
-    function autoChangeParticleShape() { if (!particleGui || !particleGeometry || !particleParams.autoShapeChangeEnabled) return; let nextIndex; let attempts = 0; const maxAttempts = particleShapes.length + 1; do { nextIndex = (currentShapeIndex + 1) % particleShapes.length; attempts++; if (particleShapes[nextIndex] === 'Logo' && !logoShapeCalculated) { currentShapeIndex = nextIndex; } else { break; } } while (attempts < maxAttempts); if (attempts >= maxAttempts) { return; } currentShapeIndex = nextIndex; const nextShapeName = particleShapes[currentShapeIndex]; morphParticleShape(currentShapeIndex); const shapeController = particleGui.controllers.find(c => c.property === 'shape'); if (shapeController) { shapeController.setValue(nextShapeName); } }
-    function autoChangeParticleColor() { if (!particleGui || !particleGeometry) return; currentColorIndex = (currentColorIndex + 1) % particleColorPresets.length; const nextColorName = particleColorPresets[currentColorIndex]; changeParticleColor(nextColorName); const colorController = particleGui.controllers.find(c => c.property === 'colorPreset'); if (colorController) { colorController.setValue(nextColorName); } }
-    function toggleAutoShapeChange(enabled) { if (enabled) { if (!autoShapeChangeIntervalId) { autoShapeChangeIntervalId = setInterval(autoChangeParticleShape, 15000); } } else { if (autoShapeChangeIntervalId) { clearInterval(autoShapeChangeIntervalId); autoShapeChangeIntervalId = null; } } }
-
+    function handleGuiToggle(event) { /* ... tuo codice ... */ }
+    function autoChangeParticleShape() { /* ... tuo codice ... */ }
+    function autoChangeParticleColor() { /* ... tuo codice ... */ }
+    function toggleAutoShapeChange(enabled) { /* ... tuo codice ... */ }
     function loadData() {
+        console.log("MAIN APP: loadData() chiamata.");
         const configFields = airtableData.config;
         const fetchedLinks = airtableData.links;
         if (loadingMessage) loadingMessage.style.display = 'block'; if (linkContainer) linkContainer.innerHTML = ''; if (backgroundVideoContainer) backgroundVideoContainer.style.display = 'none'; if (particleCanvasElement) particleCanvasElement.style.display = 'none'; document.body.style.backgroundImage = '';
@@ -173,11 +146,13 @@ function runMainApp(airtableData) {
         linkContainer.innerHTML = ''; if (fetchedLinks && fetchedLinks.length > 0) { const bfz=getField(configFields, fieldMap.config.buttonFontSize); const bp=getField(configFields, fieldMap.config.buttonPadding); fetchedLinks.forEach(link => { if(!link.url){return;} const button=document.createElement('a'); button.href=link.url; button.textContent=getField(link, fieldMap.links.label, 'Link'); button.className='link-button'; button.target='_top'; button.style.background=getField(link, fieldMap.links.color, defaultButtonColor); button.style.fontSize=bfz||''; button.style.padding=bp||''; linkContainer.appendChild(button); }); } else { linkContainer.innerHTML = '<p>Nessun link attivo.</p>'; }
         const footerImageInfo = getAttachmentInfo(configFields, fieldMap.config.footerImageUrl); if (footerImageContainer) { footerImageContainer.innerHTML = ''; if (footerImageInfo && footerImageInfo.url) { const alt=getField(configFields, fieldMap.config.footerImageAlt,'Img Footer'); const footerImg=document.createElement('img'); footerImg.src=footerImageInfo.url; footerImg.alt=alt; footerImageContainer.appendChild(footerImg); } }
         if (loadingMessage) loadingMessage.style.display = 'none';
+        console.log("MAIN APP: Dati caricati e applicati.");
     }
     
+    console.log("MAIN APP: Avvio l'inizializzazione...");
     initParticles();
+    loadData();
     toggleAutoShapeChange(particleParams.autoShapeChangeEnabled);
     if (autoColorChangeIntervalId) clearInterval(autoColorChangeIntervalId);
     autoColorChangeIntervalId = setInterval(autoChangeParticleColor, 7000);
-    loadData();
 }
