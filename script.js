@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error('Passcode non valido');
             }
         } catch (error) {
-            loginError.textContent = 'ACCESSO NEGATO';
+            loginError.textContent = 'ACCESSO NEGATO PER TE';
             loginError.style.display = 'block';
             setTimeout(() => { loginError.style.display = 'none'; }, 2000);
             loginButton.disabled = false;
