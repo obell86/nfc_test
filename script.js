@@ -38,7 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ passcode: enteredPasscode }),
             });
-            if (!response.ok) { throw new Error(`Accesso Negato (${response.status})`); }
+            if (!response.ok) {
+                throw new Error(`Accesso Negato (${response.status})`);
+            }
             const data = await response.json();
             if (data.success) {
                 sessionStorage.setItem('isAuthenticated_v2', 'true');
@@ -48,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error('Passcode non valido');
             }
         } catch (error) {
-            loginError.textContent = 'ACCESSO NEGATO';
+            loginError.textContent = 'ACCESSO NEGATO PER TE';
             loginError.style.display = 'block';
             setTimeout(() => { loginError.style.display = 'none'; }, 2000);
             loginButton.disabled = false;
@@ -77,25 +79,24 @@ document.addEventListener('DOMContentLoaded', () => {
 // PARTE 2: APP PRINCIPALE (THREE.JS)
 // ===================================
 function runMainApp(airtableData) {
-    // --- Mappatura Campi ---
+    // --- Mappatura Campi Airtable ---
     const fieldMap = { config: { title: 'Titolo Pagina', titleSize: 'Dimensione Titolo', logoUrl: 'Logo', footerImageAlt: 'Alt Img Footer', footerImageUrl: 'Immagine Footer', backgroundAttachment: 'Sfondo', showLoader: 'Mostra Loader', loaderText: 'Testo Loader', loaderBarColor: 'Colore Barra Loader', loaderTextSize: 'Dimensione Testo Loader', loaderWidth: 'Larghezza Loader', loaderBarSpeed: 'Velocità Barra Loader', buttonFontSize: 'Dimensione Font Pulsanti', buttonPadding: 'Padding Pulsanti', showCountdown: 'Mostra Countdown', countdownTarget: 'Data Target Countdown', countdownLabel: 'Etichetta Countdown', linkedLinks: 'Link Attivi' }, links: { label: 'Etichetta', url: 'Scrivi URL', color: 'Scrivi Colore Pulsante' } };
     const defaultButtonColor = 'linear-gradient(45deg, #ff00ff, #00ffff)';
-    
-    // --- Elementi DOM ---
+
+    // --- Elementi DOM Principali ---
     const titleElement = document.getElementById('page-title'); const logoContainer = document.getElementById('logo-container'); const linkContainer = document.getElementById('link-container'); const loadingMessage = document.getElementById('loading-message'); const loader = document.getElementById('loader'); const loaderTextElement = loader ? loader.querySelector('#loading-text-container') : null; const loaderBarElement = loader ? loader.querySelector('.loader-bar') : null; const footerImageContainer = document.getElementById('footer-image-container'); const countdownContainer = document.getElementById('countdown-container'); const countdownLabelElement = document.getElementById('countdown-label'); const daysElement = document.getElementById('days'); const hoursElement = document.getElementById('hours'); const minutesElement = document.getElementById('minutes'); const secondsElement = document.getElementById('seconds'); const countdownMessageElement = document.getElementById('countdown-message'); const backgroundVideoContainer = document.getElementById('background-video-container'); const backgroundVideo = document.getElementById('background-video'); const backgroundVideoSource = backgroundVideo ? backgroundVideo.querySelector('source') : null; let countdownIntervalId = null; const toggleGuiButton = document.getElementById('toggle-gui-btn');
-    
-    // --- Variabili Globali ---
-    let particleScene, particleCamera, particleRenderer, particlePoints, particleGui, particleMaterial; let particleTargetPositions = {}; let currentShapeIndex = -1; const particleShapes = ['Sphere', 'Cube', 'Torus', 'Spiral', 'Pyramid', 'Cylinder', 'Logo']; let morphStartTime = -1; const particleClock = new THREE.Clock();
+
+    // --- Variabili Globali per le Particelle ---
+    let particleScene, particleCamera, particleRenderer, particlePoints, particleGui; let particleGeometry, particleMaterial; let particleTargetPositions = {}; let currentShapeIndex = -1; const particleShapes = ['Sphere', 'Cube', 'Torus', 'Spiral', 'Pyramid', 'Cylinder', 'Logo']; let morphStartTime = -1; const particleClock = new THREE.Clock();
     const particleParams = { particleCount: 5000, particleSize: 0.1, morphDuration: 2.0, autoRotateSpeed: 0.2, autorotate: true, autoShapeChangeEnabled: true, colorMorphDuration: 1.5, guiControls: { shape: 'Logo', colorPreset: 'orange' } };
     const numParticlesMax = 10000; let particleCanvasElement; let particleAnimationId = null; const mobileBreakpoint = 600;
     let autoShapeChangeIntervalId = null; let autoColorChangeIntervalId = null; const particleColorPresets = ['orange', 'purple', 'lime', 'multi']; let currentColorIndex = 0; let logoShapeCalculated = false;
     let colorMorphStartTime = -1;
 
-    // --- Funzioni Helper ---
-    const getField = (fields, fieldName, defaultValue = null) => { return (fields && fields[fieldName] !== undefined && fields[fieldName] !== null && fields[fieldName] !== '') ? fields[fieldName] : defaultValue; };
-    const getAttachmentInfo = (fields, fieldName) => { const att = getField(fields, fieldName); if (Array.isArray(att) && att.length > 0) { const fA = att[0]; let url = fA.url; if (fA.type && fA.type.startsWith('image/') && fA.thumbnails && fA.thumbnails.large) { url = fA.thumbnails.large.url; } return { url: url, type: fA.type || null, filename: fA.filename || null }; } return null; };
+    // --- Funzioni Helper (Airtable) ---
+    const getField = (fields, fieldName, defaultValue = null) => { return (fields && fields[fieldName] !== undefined && fields[fieldName] !== null && fields[fieldName] !== '') ? fields[fieldName] : defaultValue; }; const getAttachmentInfo = (fields, fieldName) => { const att = getField(fields, fieldName); if (Array.isArray(att) && att.length > 0) { const fA = att[0]; let url = fA.url; if (fA.type && fA.type.startsWith('image/') && fA.thumbnails && fA.thumbnails.large) { url = fA.thumbnails.large.url; } return { url: url, type: fA.type || null, filename: fA.filename || null }; } return null; };
 
-    // --- Funzioni Particelle ---
+    // --- Funzioni Logica Particelle ---
     function initParticles() {
         console.log("Initializing particle system...");
         particleCanvasElement = document.getElementById('particle-canvas'); if (!particleCanvasElement) { console.error("Particle canvas element not found!"); return; }
@@ -104,14 +105,28 @@ function runMainApp(airtableData) {
         particleCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000); particleCamera.position.z = cameraZ;
         particleRenderer = new THREE.WebGLRenderer({ canvas: particleCanvasElement, antialias: true, alpha: true }); particleRenderer.setSize(window.innerWidth, window.innerHeight); particleRenderer.setPixelRatio(window.devicePixelRatio); particleRenderer.setClearColor(0x000000, 0);
         const initialParticleSize = isMobile ? 0.1 : 0.15; particleParams.particleSize = initialParticleSize; particleGeometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(numParticlesMax * 3); const colors = new Float32Array(numParticlesMax * 3); const initialPositions = new Float32Array(numParticlesMax * 3); const initialColors = new Float32Array(numParticlesMax * 3); const targetColors = new Float32Array(numParticlesMax * 3);
+        const positions = new Float32Array(numParticlesMax * 3);
+        const colors = new Float32Array(numParticlesMax * 3);
+        const initialPositions = new Float32Array(numParticlesMax * 3);
+        const initialColors = new Float32Array(numParticlesMax * 3);
+        const targetColors = new Float32Array(numParticlesMax * 3);
         const initialColor = new THREE.Color(particleParams.guiControls.colorPreset);
-        for (let i = 0; i < particleParams.particleCount; i++) { const i3 = i * 3; positions[i3] = (Math.random() - 0.5) * 0.1; positions[i3 + 1] = (Math.random() - 0.5) * 0.1; positions[i3 + 2] = (Math.random() - 0.5) * 0.1; initialColor.toArray(colors, i3); initialColor.toArray(initialColors, i3); initialColor.toArray(targetColors, i3); initialPositions[i3] = positions[i3]; initialPositions[i3 + 1] = positions[i3 + 1]; initialPositions[i3 + 2] = positions[i3 + 2]; }
-        particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3)); particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3)); particleGeometry.setAttribute('initialPosition', new THREE.BufferAttribute(initialPositions, 3)); particleGeometry.setAttribute('initialColor', new THREE.BufferAttribute(initialColors, 3)); particleGeometry.setAttribute('targetColor', new THREE.BufferAttribute(targetColors, 3));
+        for (let i = 0; i < particleParams.particleCount; i++) {
+             const i3 = i * 3;
+             positions[i3] = (Math.random() - 0.5) * 0.1; positions[i3 + 1] = (Math.random() - 0.5) * 0.1; positions[i3 + 2] = (Math.random() - 0.5) * 0.1;
+             initialColor.toArray(colors, i3); initialColor.toArray(initialColors, i3); initialColor.toArray(targetColors, i3);
+             initialPositions[i3] = positions[i3]; initialPositions[i3 + 1] = positions[i3 + 1]; initialPositions[i3 + 2] = positions[i3 + 2];
+        }
+        particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        particleGeometry.setAttribute('initialPosition', new THREE.BufferAttribute(initialPositions, 3));
+        particleGeometry.setAttribute('initialColor', new THREE.BufferAttribute(initialColors, 3));
+        particleGeometry.setAttribute('targetColor', new THREE.BufferAttribute(targetColors, 3));
         particleShapes.forEach(shapeName => { particleGeometry.setAttribute(`targetPosition${shapeName}`, new THREE.BufferAttribute(new Float32Array(numParticlesMax * 3), 3)); });
         particleMaterial = new THREE.PointsMaterial({ size: initialParticleSize, vertexColors: true, sizeAttenuation: true, depthWrite: false });
         particlePoints = new THREE.Points(particleGeometry, particleMaterial); particleScene.add(particlePoints);
-        calculateParticleTargetPositions(); setupParticleGUI(); window.addEventListener('resize', onParticleWindowResize); window.addEventListener('keydown', handleGuiToggle); if(toggleGuiButton) toggleGuiButton.addEventListener('click', handleGuiToggle);
+        calculateParticleTargetPositions();
+        setupParticleGUI(); window.addEventListener('resize', onParticleWindowResize); window.addEventListener('keydown', handleGuiToggle); if(toggleGuiButton) toggleGuiButton.addEventListener('click', handleGuiToggle);
         console.log("Particle system initialization complete."); startParticleAnimation();
     }
     function setupParticleGUI() {
@@ -156,11 +171,10 @@ function runMainApp(airtableData) {
     function autoChangeParticleColor() { if (!particleGui || !particleGeometry) return; currentColorIndex = (currentColorIndex + 1) % particleColorPresets.length; const nextColorName = particleColorPresets[currentColorIndex]; changeParticleColor(nextColorName); const colorController = particleGui.controllers.find(c => c.property === 'colorPreset'); if (colorController) { colorController.setValue(nextColorName); } console.log("Auto-changing color to:", nextColorName); }
     function toggleAutoShapeChange(enabled) { if (enabled) { if (!autoShapeChangeIntervalId) { console.log("Starting Auto Shape Change (15s interval)"); autoShapeChangeIntervalId = setInterval(autoChangeParticleShape, 15000); } } else { if (autoShapeChangeIntervalId) { clearInterval(autoShapeChangeIntervalId); autoShapeChangeIntervalId = null; console.log("Stopped Auto Shape Change"); } } }
 
-    // --- Funzione Principale di Caricamento Dati ---
     function loadData() {
         const configFields = airtableData.config;
         const fetchedLinks = airtableData.links;
-
+        
         // Sfondo
         if (backgroundVideoContainer) backgroundVideoContainer.style.display = 'none';
         if (particleCanvasElement) particleCanvasElement.style.display = 'none';
@@ -189,7 +203,9 @@ function runMainApp(airtableData) {
                     particleRenderer.setClearColor(0x000000, 0);
                     particleCanvasElement.style.display = 'block';
                 }
-            } else { showParticlesOnly = true; }
+            } else {
+                showParticlesOnly = true;
+            }
         }
         if (showParticlesOnly) {
             if (particleCanvasElement && particleRenderer) {
@@ -197,26 +213,26 @@ function runMainApp(airtableData) {
                 particleCanvasElement.style.display = 'block';
             }
         }
-
+        
         // Titolo e Logo
         const pageTitle = getField(configFields, fieldMap.config.title, 'Link Hub');
         document.title = pageTitle;
         if (titleElement) { titleElement.textContent = pageTitle; }
         const logoInfo = getAttachmentInfo(configFields, fieldMap.config.logoUrl);
-        if (logoContainer) logoContainer.innerHTML = '';
+        if(logoContainer) logoContainer.innerHTML = '';
         if (logoInfo && logoInfo.url) {
             const logoImg = document.createElement('img');
             logoImg.src = logoInfo.url;
             logoImg.alt = 'Logo';
-            if (logoContainer) logoContainer.appendChild(logoImg);
+            if(logoContainer) logoContainer.appendChild(logoImg);
             processLogoImage(logoInfo.url);
         } else {
             logoShapeCalculated = false;
             currentShapeIndex = 0;
             morphParticleShape(currentShapeIndex, true);
         }
-        
-        // Pulsanti
+
+        // Pulsanti con Stili Dinamici
         if (linkContainer) linkContainer.innerHTML = '';
         if (fetchedLinks && fetchedLinks.length > 0) {
             const buttonFontSize = getField(configFields, fieldMap.config.buttonFontSize);
@@ -247,25 +263,32 @@ function runMainApp(airtableData) {
         if (countdownContainer && showCountdown === true && countdownTargetStr) {
             const targetDate = new Date(countdownTargetStr);
             if (!isNaN(targetDate) && targetDate.getTime() > Date.now()) {
-                if (countdownLabelElement) countdownLabelElement.textContent = countdownLabel;
+                if (!document.getElementById('countdown-timer')) {
+                     countdownContainer.innerHTML = `<p id="countdown-label"></p><div id="countdown-timer"><span id="days">00</span><span id="hours">00</span><span id="minutes">00</span><span id="seconds">00</span></div><p id="countdown-message" style="display: none;"></p>`;
+                }
+                const labelEl = document.getElementById('countdown-label');
+                const timerEl = document.getElementById('countdown-timer');
+                const messageEl = document.getElementById('countdown-message');
+                const daysEl = document.getElementById('days');
+                const hoursEl = document.getElementById('hours');
+                const minutesEl = document.getElementById('minutes');
+                const secondsEl = document.getElementById('seconds');
+                if (labelEl) labelEl.textContent = countdownLabel;
                 const updateCountdown = () => {
                     const now = new Date().getTime();
                     const distance = targetDate.getTime() - now;
                     if (distance < 0) {
                         clearInterval(countdownIntervalId);
-                        if(document.getElementById('countdown-timer')) document.getElementById('countdown-timer').style.display = 'none';
-                        if(countdownLabelElement) countdownLabelElement.style.display = 'none';
-                        if(countdownMessageElement) { countdownMessageElement.textContent = "Tempo Scaduto!"; countdownMessageElement.style.display = 'block'; }
+                        if(timerEl) timerEl.style.display = 'none';
+                        if(labelEl) labelEl.style.display = 'none';
+                        if(messageEl) { messageEl.textContent = "Tempo Scaduto!"; messageEl.style.display = 'block'; }
                         return;
                     }
-                    const d = Math.floor(distance / 864e5);
-                    const h = Math.floor((distance % 864e5) / 36e5);
-                    const m = Math.floor((distance % 36e5) / 6e4);
-                    const s = Math.floor((distance % 6e4) / 1e3);
-                    if (daysElement) daysElement.textContent = String(d).padStart(2, '0');
-                    if (hoursElement) hoursElement.textContent = String(h).padStart(2, '0');
-                    if (minutesElement) minutesElement.textContent = String(m).padStart(2, '0');
-                    if (secondsElement) secondsElement.textContent = String(s).padStart(2, '0');
+                    const d = Math.floor(distance / 864e5); const h = Math.floor((distance % 864e5) / 36e5); const m = Math.floor((distance % 36e5) / 6e4); const s = Math.floor((distance % 6e4) / 1e3);
+                    if (daysEl) daysEl.textContent = String(d).padStart(2, '0');
+                    if (hoursEl) hoursEl.textContent = String(h).padStart(2, '0');
+                    if (minutesEl) minutesEl.textContent = String(m).padStart(2, '0');
+                    if (secondsEl) secondsEl.textContent = String(s).padStart(2, '0');
                 };
                 countdownContainer.style.display = 'block';
                 updateCountdown();
