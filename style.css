@@ -1,44 +1,19 @@
 /* =================================== */
 /* STYLE.CSS - Party Style v9.9++      */
-/* ... (altri commenti) ... */
-/* MODIFIED: Adjusted mobile layout for centered particles & visible buttons */
 /* =================================== */
-
-/* --- Keyframes --- */
-/* (Invariati...) */
 @keyframes loading-loop{0%{width:0%}50%{width:100%}100%{width:0%}}@keyframes old-bar-flicker{0%,100%{opacity:1;text-shadow:0 0 2px #fff,0 0 5px #fff,0 0 8px #0ff,0 0 12px #0ff,0 0 15px #0ff}50%{opacity:.6;text-shadow:0 0 2px rgba(255,255,255,.7),0 0 4px rgba(0,255,255,.5),0 0 8px rgba(0,255,255,.3)}5%{opacity:.7}8%{opacity:1}15%{opacity:.4;text-shadow:0 0 2px rgba(0,255,255,.3)}18%{opacity:1}30%{opacity:.8}40%{opacity:1}60%{opacity:.5}63%{opacity:1}75%{opacity:.7}85%{opacity:1}92%{opacity:.6}95%{opacity:1}}@keyframes pulse-intense{0%,100%{box-shadow:0 0 8px var(--button-neon-color,#fff),inset 0 0 3px 1px rgba(0,0,0,.5);transform:scale(1)}50%{box-shadow:0 0 15px var(--button-neon-color,#fff),0 0 25px var(--button-neon-color,#fff),inset 0 0 4px 1px rgba(0,0,0,.4);transform:scale(1.03)}}@keyframes logo-float{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}@keyframes high-quality-flicker{0%,100%{text-shadow:0 0 5px #fff,0 0 10px rgba(0,255,255,.9),0 0 20px rgba(0,255,255,.7),0 0 40px rgba(0,255,255,.5),0 0 70px rgba(0,255,255,.3);opacity:1}15%{text-shadow:0 0 3px rgba(255,255,255,.8),0 0 6px rgba(0,255,255,.5),0 0 10px rgba(0,255,255,.3);opacity:.8}30%{text-shadow:0 0 5px #fff,0 0 9px rgba(0,255,255,.8),0 0 18px rgba(0,255,255,.6),0 0 35px rgba(0,255,255,.4);opacity:.95}42%{text-shadow:0 0 2px rgba(255,255,255,.5);opacity:.5}47%{text-shadow:0 0 5px #fff,0 0 10px rgba(0,255,255,.9),0 0 20px rgba(0,255,255,.7),0 0 40px rgba(0,255,255,.5);opacity:1}65%{text-shadow:0 0 4px rgba(255,255,255,.9),0 0 8px rgba(0,255,255,.6);opacity:.9}80%{text-shadow:0 0 3px rgba(255,255,255,.6);opacity:.7}}@keyframes countdown-flicker-yellow{0%,100%{opacity:1;text-shadow:0 0 2px rgba(255,255,255,.7),0 0 5px #ffc107,0 0 10px #ffc107,0 0 15px #ffa000,0 0 20px rgba(255,160,0,.4)}50%{opacity:.7;text-shadow:0 0 1px rgba(255,255,255,.5),0 0 3px #ffd54f,0 0 6px rgba(255,160,0,.3)}5%,95%{opacity:.9}15%{opacity:.6;text-shadow:0 0 2px #ffa000,0 0 4px rgba(255,160,0,.3)}30%,70%{opacity:1}40%{opacity:.5;text-shadow:0 0 1px #ffc107}80%{opacity:.8}}
-
-/* --- Stili Generali --- */
 html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-body { position: relative; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; box-sizing: border-box; padding: 10px 20px 20px 20px; text-align: center; color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; background-color: black; overflow-x: hidden; overflow-y: auto; /* Permetti scroll verticale SE strettamente necessario */ }
-
-/* --- STILI VIDEO BACKGROUND --- */
+body { position: relative; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; box-sizing: border-box; padding: 10px 20px 20px 20px; text-align: center; color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; background-color: black; overflow-x: hidden; overflow-y: auto; }
 #background-video-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; display: none; background-color: black; }
 #background-video { width: 100%; height: 100%; object-fit: cover; object-position: center center; position: static; }
-
-/* --- Contenuto Principale --- */
 .main-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 100%; }
-
-/* --- Effetti Sfondo (Contiene Canvas) --- */
 .background-effects { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 0; pointer-events: none; }
 #particle-canvas { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-.shooting-star { /* Stili stella cadente */ }
-
-/* Stili per Pannello lil-gui */
-.lil-gui { top: 10px !important; right: 10px !important; left: auto !important; bottom: auto !important; --text-color: #eee !important; --widget-color: #ddd !important; --title-background-color: rgba(0,0,0,0.7) !important; --widget-background-color: rgba(30,30,30,0.7) !important; --folder-background-color: rgba(20,20,20,0.7) !important; z-index: 20 !important; pointer-events: auto !important; }
-
-/* --- Stili per Bottone Toggle GUI --- */
+.lil-gui { z-index: 20 !important; pointer-events: auto !important; }
 #toggle-gui-btn { position: fixed; top: 10px; left: 10px; z-index: 25; background-color: rgba(50, 50, 50, 0.6); color: #eee; border: 1px solid rgba(150, 150, 150, 0.5); border-radius: 4px; padding: 4px 8px; font-size: 1.2em; cursor: pointer; line-height: 1; opacity: 0.7; transition: opacity 0.2s ease; pointer-events: auto; }
 #toggle-gui-btn:hover { opacity: 1; }
-
-/* Logo */
-#logo-container {}
 #logo-container img { display: block; max-width: 100px; height: auto; margin-left: auto; margin-right: auto; margin-bottom: 0.4em; animation: logo-float 3s ease-in-out infinite; }
-
-/* Titolo H1 */
-h1 { max-width: 95%; line-height: 1.1; color: #ffffff; margin-top: 0.1em; margin-bottom: 3.5em; /* Spazio Desktop sotto titolo */ animation: high-quality-flicker 2s linear infinite; word-wrap: break-word; font-weight: bold; }
-
-/* *** STILI COUNTDOWN TIMER *** */
+h1 { max-width: 95%; line-height: 1.1; color: #ffffff; margin-top: 0.1em; margin-bottom: 3.5em; animation: high-quality-flicker 2s linear infinite; word-wrap: break-word; font-weight: bold; }
 #countdown-container { margin-top: 1em; margin-bottom: 1.5em; width: 100%; max-width: 90vw; padding: 0.3em 0.1em; box-sizing: border-box; }
 #countdown-label { font-size: clamp(0.75rem, 2.5vw, 0.9rem); opacity: 0.8; margin-bottom: 0.3em; display: block; color: #ccc; letter-spacing: 0.5px; white-space: normal; }
 #countdown-timer { font-family: 'Orbitron', 'Courier New', Courier, monospace; font-size: clamp(1.1rem, 4.5vw, 1.85rem); font-weight: bold; color: #FFC107; letter-spacing: 0.5px; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; box-sizing: border-box; text-align: center; animation: countdown-flicker-yellow 2.5s linear infinite; }
@@ -46,93 +21,35 @@ h1 { max-width: 95%; line-height: 1.1; color: #ffffff; margin-top: 0.1em; margin
 #countdown-timer span#hours::before, #countdown-timer span#minutes::before, #countdown-timer span#seconds::before { content: ':'; color: rgba(255, 193, 7, 0.6); padding: 0 0.05em; font-size: 0.6em; vertical-align: middle; text-shadow: none; }
 #countdown-timer span#days::after, #countdown-timer span#hours::after, #countdown-timer span#minutes::after, #countdown-timer span#seconds::after { content: attr(id); font-size: 0.3em; color: rgba(255, 160, 0, 0.7); text-transform: lowercase; vertical-align: middle; padding-left: 0.02em; text-shadow: none; letter-spacing: 0; display: inline-block; line-height: 1; }
 #countdown-message { font-size: clamp(0.9rem, 3.5vw, 1.1rem); font-weight: bold; color: #FFA000; text-shadow: 0 0 4px rgba(255, 160, 0, 0.6); margin-top: 0.5em; }
-
-/* Loader */
 .loader-container { position: relative; margin-bottom: 1.5em; justify-content: center; align-items: center; background-color: rgba(15, 15, 15, .7); border-radius: 1.5em; border: 1px solid rgba(100, 100, 100, .5); box-shadow: inset 0 0 6px rgba(0, 0, 0, .5); overflow: hidden; z-index: 1; display: flex; max-width: 90%; }
 .loader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0; opacity: .5; border-radius: 1.5em; animation: loading-loop linear infinite; z-index: 1; }
 #loading-text-container { position: relative; z-index: 2; font-weight: bold; color: #fff; letter-spacing: 1.5px; text-shadow: 0 0 1px #fff, 0 0 3px #fff, 0 0 5px #0ff, 0 0 8px #0ff, 0 0 10px #0ff; overflow: hidden; white-space: nowrap; display: inline-block; animation: old-bar-flicker 2.5s linear infinite; padding: 0.4em 0.8em; }
-
-/* Contenitore Pulsanti */
 .link-container { display: flex; flex-direction: column; align-items: center; gap: 1em; margin-top: 1.8em; width: 100%; max-width: 90%; }
 #loading-message, .link-container p { font-size: 1rem; opacity: .7; margin-top: 0.5em; margin-bottom: 0.5em; }
-
-/* Pulsante Link */
 .link-button { position: relative; display: block; width: 100%; color: #fff; text-decoration: none; border-radius: 50px; font-weight: bold; border: 2px solid; border-color: var(--button-neon-color, rgba(255, 255, 255, .5)); cursor: pointer; transition: transform .2s ease, box-shadow .4s ease, border-color .4s ease, background .3s ease; box-shadow: 0 0 5px var(--button-neon-color, #fff), inset 0 0 2px 1px rgba(0, 0, 0, .4); line-height: 1.3; backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); text-shadow: 1px 1px 1px rgba(0, 0, 0, .5); pointer-events: auto; }
 .link-button:hover, .link-button:active { transform: scale(1.02); border-color: #fff; animation: pulse-intense 1s infinite alternate; }
-
-/* STILI IMMAGINE FOOTER */
 #footer-image-container { width: 100%; margin-top: 1.5em; margin-bottom: 0.5em; }
 #footer-image-container img { display: block; margin-left: auto; margin-right: auto; max-width: 85%; height: auto; border-radius: 8px; }
-
-/* Stili Errore Frontend */
 .error-message { color: #ff4444; font-weight: bold; margin-top: 1em; border: 1px solid #ff4444; padding: 0.8em; background-color: rgba(255, 0, 0, .1); border-radius: .5em; font-size: 0.9rem; }
 body.error-page h1 { animation: none; text-shadow: none; color: #ff4444; }
-
-
+@media (max-width: 600px) { body { padding: 2px 15px 15px 15px; } #logo-container img { max-width: 110px; } h1 { margin-bottom: 2em; } .link-container { margin-top: 6em; } }
 /* ========================================= */
-/* === MEDIA QUERY PER OTTIMIZZAZIONE MOBILE === */
+/* === NUOVI STILI PER LOGIN E LIVELLI === */
 /* ========================================= */
-@media (max-width: 600px) {
-
-    body {
-        padding: 2px 15px 15px 15px; /* padding-top mobile ridotto */
-        /* Rimuovi overflow:hidden se vuoi permettere scroll come fallback estremo */
-        /* overflow-y: auto; */
-    }
-
-    #logo-container img {
-        max-width: 110px;
-        margin-bottom: 0.3em;
-    }
-
-    h1 {
-        margin-top: 0.1em;
-        /* Spazio inferiore moderato, lascia spazio a countdown/loader */
-        margin-bottom: 2em;
-    }
-
-    #countdown-container {
-        /* Riduci un po' margini per guadagnare spazio se visibile */
-        margin-top: 0.8em;
-        margin-bottom: 1em;
-        padding: 0.2em 0.1em;
-        max-width: 95vw;
-    }
-    #countdown-label { font-size: clamp(0.8rem, 2.5vw, 0.9rem); margin-bottom: 0.2em; }
-    #countdown-timer { font-size: clamp(1.4rem, 6vw, 2.2rem); color: #FFC107; letter-spacing: 0.5px; animation: countdown-flicker-yellow 2.5s linear infinite; }
-    #countdown-timer span#hours::before, #countdown-timer span#minutes::before, #countdown-timer span#seconds::before { padding: 0 0.06em; font-size: 0.58em; color: rgba(255, 193, 7, 0.6); }
-    #countdown-timer span#days::after, #countdown-timer span#hours::after, #countdown-timer span#minutes::after, #countdown-timer span#seconds::after { font-size: 0.32em; padding-left: 0.03em; color: rgba(255, 160, 0, 0.7); }
-    #countdown-message { font-size: clamp(0.9rem, 3.5vw, 1.1rem); margin-top: 0.4em; color: #FFA000; text-shadow: 0 0 4px rgba(255, 160, 0, 0.6); }
-    .loader-container {
-        /* Riduci un po' margini per guadagnare spazio se visibile */
-        margin-bottom: 1em;
-        max-width: 95%;
-    }
-    #loading-text-container { letter-spacing: 1px; padding: 0.3em 0.6em; text-shadow: 0 0 1px #fff, 0 0 3px #0ff, 0 0 5px #0ff; }
-
-    .link-container {
-        gap: 0.8em;
-        /* <<< MARGINE SUPERIORE AUMENTATO per spingere giù i bottoni >>> */
-        /* Questo valore è cruciale per il bilanciamento */
-        /* Prova valori tra 4em e 8em a seconda di quanto spazio serve */
-        margin-top: 6em;
-        max-width: 95%;
-    }
-
-    #loading-message, .link-container p { font-size: 0.9rem; margin-top: 0.3em; margin-bottom: 0.3em; }
-    .link-button { box-shadow: 0 0 3px var(--button-neon-color, #fff), inset 0 0 1px 1px rgba(0, 0, 0, .4); }
-    .link-button:hover, .link-button:active { transform: scale(1.01); }
-
-    #footer-image-container {
-        /* Riduci margine sopra per avvicinarlo ai bottoni */
-        margin-top: 1em;
-        margin-bottom: 0.3em;
-    }
-    #footer-image-container img { max-width: 75%; border-radius: 6px; }
-    .error-message { margin-top: 0.8em; padding: 0.6em; font-size: 0.85rem; }
-
-    /* Stili GUI/Toggle Btn mobile */
-    .lil-gui { /* Potrebbe collassare automaticamente */ }
-    #toggle-gui-btn { font-size: 1.5em; padding: 5px 10px; }
-
-} /* Fine Media Query (max-width: 600px) */
+#login-layer, #loading-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #000; z-index: 100; transition: opacity 0.5s ease-out, visibility 0.5s; padding: 20px; box-sizing: border-box; }
+#main-content-layer { transition: opacity 1s ease-in; }
+.glitch-text { font-family: 'Orbitron', monospace; font-size: clamp(1.5rem, 5vw, 2.5rem); position: relative; color: #00ffff; text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff; animation: glitch-flicker 4s infinite; text-align: center; }
+.glitch-text::before, .glitch-text::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
+.glitch-text::before { left: 2px; text-shadow: -2px 0 #ff00ff; animation: glitch-anim-1 2s infinite linear alternate-reverse; }
+.glitch-text::after { left: -2px; text-shadow: -2px 0 #00ff00, 2px 2px #ff00ff; animation: glitch-anim-2 3s infinite linear alternate-reverse; }
+@keyframes glitch-flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+@keyframes glitch-anim-1 { 0%, 100% { clip-path: inset(45% 0 56% 0); } 25% { clip-path: inset(5% 0 96% 0); } 50% { clip-path: inset(85% 0 6% 0); } 75% { clip-path: inset(55% 0 46% 0); } }
+@keyframes glitch-anim-2 { 0%, 100% { clip-path: inset(15% 0 86% 0); } 25% { clip-path: inset(75% 0 26% 0); } 50% { clip-path: inset(35% 0 66% 0); } 75% { clip-path: inset(95% 0 4% 0); } }
+#login-form-container { text-align: center; }
+#passcode-input { display: block; margin: 2em auto; width: 80%; max-width: 300px; font-family: 'Orbitron', monospace; font-size: 1.5rem; color: #00ffff; background: transparent; border: 2px solid #00ffff; text-align: center; padding: 10px; box-shadow: 0 0 15px #00ffff inset, 0 0 10px #00ffff; outline: none; }
+#login-button { font-family: 'Orbitron', monospace; font-size: 1.2rem; padding: 10px 30px; color: #000; background: #00ffff; border: none; cursor: pointer; box-shadow: 0 0 20px #00ffff; transition: all 0.2s ease; }
+#login-button:hover { transform: scale(1.05); box-shadow: 0 0 30px #00ffff, 0 0 40px #ff00ff; }
+#login-error { color: #ff0055; margin-top: 1em; text-shadow: 0 0 5px #ff0055; font-weight: bold; }
+.loader-bar-animation { width: 80%; max-width: 400px; height: 4px; background-color: #00ffff; margin-top: 2em; position: relative; overflow: hidden; }
+.loader-bar-animation::after { content: ''; position: absolute; top: 0; left: -50%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, #ff00ff, transparent); animation: loading-scan 1.5s infinite linear; }
+@keyframes loading-scan { 0% { left: -50%; } 100% { left: 100%; } }

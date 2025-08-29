@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caricamento...</title>
-    <!-- Font Orbitron -->
+    <title>Accesso Riservato</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
-    <!-- Stile Principale -->
     <link rel="stylesheet" href="style.css">
-    <!-- Import Map -->
     <script type="importmap">
         {
             "imports": {
@@ -22,49 +19,44 @@
     </script>
 </head>
 <body>
-    <!-- Bottone Toggle GUI -->
-    <button id="toggle-gui-btn" title="Toggle Particle Controls (H)">⚙️</button>
-
-    <!-- Contenitore Sfondo Video -->
-    <div id="background-video-container">
-        <video autoplay muted loop playsinline id="background-video">
-            <source src="" type="video/mp4">
-            Il tuo browser non supporta i video HTML5.
-        </video>
+    <!-- STRATO 1: Login con Glitch -->
+    <div id="login-layer">
+        <div id="login-form-container">
+            <h2 class="glitch-text" data-text="ACCESSO RISERVATO">ACCESSO RISERVATO</h2>
+            <input type="password" id="passcode-input" placeholder="PASSCODE" autocomplete="off">
+            <button id="login-button">SBLOCCA</button>
+            <p id="login-error" style="display: none;"></p>
+        </div>
     </div>
 
-    <!-- Contenitore Effetti Sfondo -->
-    <div class="background-effects">
-         <canvas id="particle-canvas"></canvas>
-         <div class="shooting-star"></div>
+    <!-- STRATO 2: Caricamento -->
+    <div id="loading-layer" style="display: none;">
+        <h2 class="glitch-text" data-text="AUTENTICAZIONE...">AUTENTICAZIONE...</h2>
+        <div class="loader-bar-animation"></div>
+        <p id="loading-status">Verifica in corso...</p>
     </div>
 
-    <!-- Contenuto Principale -->
-    <div class="main-content">
-        <div id="logo-container"></div>
-        <h1 id="page-title"></h1>
-        <!-- Countdown -->
-        <div id="countdown-container" style="display: none;">
-            <p id="countdown-label"></p>
-            <div id="countdown-timer">
-                 <span id="days">00</span><span id="hours">00</span><span id="minutes">00</span><span id="seconds">00</span>
-            </div>
-             <p id="countdown-message" style="display: none;"></p>
+    <!-- STRATO 3: Contenuto Principale (nascosto) -->
+    <div id="main-content-layer" style="visibility: hidden; opacity: 0;">
+        <button id="toggle-gui-btn" title="Toggle Particle Controls (H)">⚙️</button>
+        <div id="background-video-container">
+            <video autoplay muted loop playsinline id="background-video"><source src="" type="video/mp4"></video>
         </div>
-        <!-- Loader -->
-        <div class="loader-container" id="loader" style="display: none;">
-           <div class="loader-bar"></div>
-           <span id="loading-text-container"></span>
+        <div class="background-effects">
+             <canvas id="particle-canvas"></canvas>
         </div>
-        <!-- Link -->
-        <div class="link-container" id="link-container">
-            <p id="loading-message">Caricamento link...</p>
+        <div class="main-content">
+            <div id="logo-container"></div>
+            <h1 id="page-title"></h1>
+            <div id="countdown-container" style="display: none;"></div>
+            <div class="loader-container" id="loader" style="display: none;"></div>
+            <div class="link-container" id="link-container"></div>
+            <div id="footer-image-container"></div>
         </div>
-        <!-- Footer Img -->
-        <div id="footer-image-container"></div>
     </div>
-
-    <!-- Script Principale -->
-    <script type="module" src="script.js"></script>
+    
+    <!-- Script di Login (leggero) -->
+    <script src="login.js"></script>
+    <!-- Lo script pesante delle particelle verrà caricato dopo il login -->
 </body>
 </html>
